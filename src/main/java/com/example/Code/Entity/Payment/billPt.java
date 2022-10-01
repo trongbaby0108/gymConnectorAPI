@@ -1,5 +1,6 @@
 package com.example.Code.Entity.Payment;
-import com.example.Code.Entity.PT.personal_trainer;
+
+import com.example.Code.Entity.PT.personalTrainer;
 import com.example.Code.Entity.User.user;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class billPt {
     private LocalDateTime dayEnd ;
     @ManyToOne
     @JoinColumn(name = "ptId",nullable = false, referencedColumnName = "ptId")
-    private personal_trainer personal_trainer;
+    private personalTrainer personal_trainer;
 
     @ManyToOne
     @JoinColumn(name = "userId",nullable = false, referencedColumnName = "userId")

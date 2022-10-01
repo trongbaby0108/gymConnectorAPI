@@ -1,6 +1,6 @@
 package com.example.Code.Model;
 
-import com.example.Code.Entity.PT.personal_trainer;
+import com.example.Code.Entity.PT.personalTrainer;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -10,5 +10,5 @@ public class billPTResponse {
     private int id ;
     private LocalDateTime dayStart ;
     private LocalDateTime dayEnd ;
-    private personal_trainer trainer;
+    private personalTrainer trainer;
 }

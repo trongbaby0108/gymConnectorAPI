@@ -16,11 +16,11 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @ToString
-@Table(name = "bill_gym")
+@Table
 public class billGym {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name= "billID")
+    @Column(name= "billGymID")
     private int id ;
     private LocalDateTime dayStart ;
     private LocalDateTime dayEnd ;

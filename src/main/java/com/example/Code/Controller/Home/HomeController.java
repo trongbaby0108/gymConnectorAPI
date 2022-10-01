@@ -2,7 +2,7 @@ package com.example.Code.Controller.Home;
 
 import com.example.Code.Entity.Gym.combo;
 import com.example.Code.Entity.Gym.gymRate;
-import com.example.Code.Entity.PT.personal_trainer;
+import com.example.Code.Entity.PT.personalTrainer;
 import com.example.Code.Entity.PT.ptRate;
 import com.example.Code.Model.PTResponseModel;
 import com.example.Code.Model.gymModel;
@@ -47,7 +47,7 @@ public class HomeController {
     @RequestMapping("/getPT")
     public List<PTResponseModel> getPT(){
         List<PTResponseModel> ptModels = new ArrayList<>();
-        for (personal_trainer pt :personal_trainerService.getAll()){
+        for (personalTrainer pt :personal_trainerService.getAll()){
             if(pt.getAccount().isEnable()){
                 PTResponseModel ptModel = new PTResponseModel(pt);
                 ptModel.setRate(getPTRate(ptModel.getId()));
@@ -91,7 +91,7 @@ public class HomeController {
     @RequestMapping("/getPTByGym")
     public List<PTResponseModel> getPTByGym(@RequestParam int id){
         List<PTResponseModel> ptModels = new ArrayList<>();
-        for (personal_trainer pt :personal_trainerService.getPTByGym(id)){
+        for (personalTrainer pt :personal_trainerService.getPTByGym(id)){
             if(pt.getAccount().isEnable()){
                 PTResponseModel ptModel = new PTResponseModel(pt);
                 ptModel.setRate(getPTRate(pt.getId()));
@@ -158,7 +158,7 @@ public class HomeController {
         ptRate ptRate = new ptRate();
         ptRate.setComment(content);
         ptRate.setVote(vote);
-        ptRate.setPersonal_trainer(personal_trainerService.findById(ptID));
+        ptRate.setPersonalTrainer(personal_trainerService.findById(ptID));
         ptRate.setUser(userService.findById(userId));
         judge_ptService.save(ptRate);
         return "successful";

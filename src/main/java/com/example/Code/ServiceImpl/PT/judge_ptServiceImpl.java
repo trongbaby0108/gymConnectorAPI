@@ -17,7 +17,7 @@ public class judge_ptServiceImpl implements judge_ptService {
     public List<ptRate> getByPT(int id) {
         List<ptRate> res = new ArrayList<>();
         for(ptRate ptRate: judge_ptRepository.findAll()) {
-            if(ptRate.getPersonal_trainer().getId() == id)
+            if(ptRate.getPersonalTrainer().getId() == id)
                 res.add(ptRate);
         }
         return res;

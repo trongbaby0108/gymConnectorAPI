@@ -1,6 +1,6 @@
 package com.example.Code.Controller.Payment;
 
-import com.example.Code.Entity.PT.personal_trainer;
+import com.example.Code.Entity.PT.personalTrainer;
 import com.example.Code.Entity.Payment.billPt;
 import com.example.Code.Entity.User.user;
 import com.example.Code.Model.billPTResponse;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/bill_pt")
-public class bill_ptController {
+public class billPtController {
     @Autowired
     private bill_ptService bill_ptService;
 
@@ -32,7 +32,7 @@ public class bill_ptController {
             @RequestParam("idUser") int idUser,
             @RequestParam("idPt") int idPt){
         user user = userService.findById(idUser);
-        personal_trainer pt = personal_trainerService.findById(idPt);
+        personalTrainer pt = personal_trainerService.findById(idPt);
         if(bill_ptService.getByUser(idUser) != null){
             return false;
         }

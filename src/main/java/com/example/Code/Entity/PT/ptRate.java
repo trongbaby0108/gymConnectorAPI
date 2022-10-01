@@ -22,7 +22,7 @@ public class ptRate {
 
     @ManyToOne
     @JoinColumn(name = "ptID",referencedColumnName = "ptId")
-    private personal_trainer personal_trainer;
+    private personalTrainer personalTrainer;
 
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false, referencedColumnName = "userId")

@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class picGym {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name= "ID_bill_pt")
+    @Column
     private int id;
     private String img ;
 

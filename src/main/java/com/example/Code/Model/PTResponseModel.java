@@ -1,6 +1,6 @@
 package com.example.Code.Model;
 
-import com.example.Code.Entity.PT.personal_trainer;
+import com.example.Code.Entity.PT.personalTrainer;
 import lombok.Data;
 
 @Data
@@ -19,7 +19,7 @@ public class PTResponseModel {
 
     private gymModel gym;
 
-    public PTResponseModel(personal_trainer pt) {
+    public PTResponseModel(personalTrainer pt) {
         this.id = pt.getId();
         this.username = pt.getAccount().getUsername();
         this.name = pt.getName();

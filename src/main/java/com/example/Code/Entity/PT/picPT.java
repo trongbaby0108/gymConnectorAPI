@@ -19,5 +19,5 @@ public class picPT {
     private String img ;
     @ManyToOne
     @JoinColumn(name = "ptID",referencedColumnName = "ptId")
-    private personal_trainer personal_trainer;
+    private personalTrainer personal_trainer;
 }

@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/bill_gym")
-public class bill_gymController {
+public class billGymController {
     @Autowired
     private bill_gymService bill_gymService;
 

@@ -1,15 +1,15 @@
 package com.example.Code.Service.PT;
 
-import com.example.Code.Entity.PT.personal_trainer;
+import com.example.Code.Entity.PT.personalTrainer;
 
 import java.util.List;
 
 public interface personal_trainerService {
-    public List<personal_trainer> getAll();
-    public void save(personal_trainer personal_trainer);
+    public List<personalTrainer> getAll();
+    public void save(personalTrainer personal_trainer);
 
-    public personal_trainer findById(int id);
+    public personalTrainer findById(int id);
 
-    public List<personal_trainer> getPTByGym(int id);
-    public personal_trainer findByUsername(String username);
+    public List<personalTrainer> getPTByGym(int id);
+    public personalTrainer findByUsername(String username);
 }

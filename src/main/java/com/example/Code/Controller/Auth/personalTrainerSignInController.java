@@ -2,16 +2,15 @@ package com.example.Code.Controller.Auth;
 
 import com.example.Code.Entity.Auth.Account;
 import com.example.Code.Entity.Auth.token;
-import com.example.Code.Entity.PT.personal_trainer;
-import com.example.Code.Entity.User.user;
+import com.example.Code.Entity.PT.personalTrainer;
 import com.example.Code.Model.Uploader;
 import com.example.Code.Model.role;
 import com.example.Code.Model.tokenType;
 import com.example.Code.Model.typeAccount;
 import com.example.Code.Service.Auth.AccountService;
+import com.example.Code.Service.Auth.tokenService;
 import com.example.Code.Service.Gym.gymService;
 import com.example.Code.Service.PT.personal_trainerService;
-import com.example.Code.Service.Auth.tokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -74,7 +73,7 @@ public class personalTrainerSignInController {
                 role.PERSONAL_TRAINER,
                 typeAccount.NORMAL);
         AccountService.save(account);
-        personal_trainer personal_trainer = new personal_trainer();
+        personalTrainer personal_trainer = new personalTrainer();
         personal_trainer.setAccount(account);
         personal_trainer.setAddress(address);
         personal_trainer.setName(name);
@@ -87,7 +86,7 @@ public class personalTrainerSignInController {
     @PostMapping("/uploadAvatar")
     private String uploadAvatar(@RequestParam("username") String username,
                                 @RequestParam("avatar") MultipartFile avatar){
-        personal_trainer personal_trainer = personal_trainerService.findByUsername(username);
+        personalTrainer personal_trainer = personal_trainerService.findByUsername(username);
         Uploader uploader = new Uploader();
         personal_trainer.setAvatar(uploader.uploadFile(avatar));
         personal_trainerService.save(personal_trainer);

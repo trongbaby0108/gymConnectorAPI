@@ -1,9 +1,12 @@
 package com.example.Code.Controller.Auth;
 
 import com.example.Code.Entity.Auth.Account;
-import com.example.Code.Entity.PT.personal_trainer;
+import com.example.Code.Entity.PT.personalTrainer;
 import com.example.Code.Entity.User.user;
-import com.example.Code.Model.*;
+import com.example.Code.Model.PTResponseModel;
+import com.example.Code.Model.jwtDecodeModel;
+import com.example.Code.Model.jwtRequest;
+import com.example.Code.Model.userInfoResponse;
 import com.example.Code.Security.JwtTokenUtil;
 import com.example.Code.Service.Auth.AccountService;
 import com.example.Code.Service.PT.personal_trainerService;
@@ -16,12 +19,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Properties;
 
 @RequestMapping(value = "/auth")
 @RestController
@@ -94,7 +94,7 @@ public class loginController {
         }
         jwtDecodeModel jwtDecodeModel = new Gson().fromJson(jsonString, jwtDecodeModel.class);
         Account accountResult = accountService.findByUsername(jwtDecodeModel.sub);
-        personal_trainer pt =  personal_trainerService.findByUsername(accountResult.getUsername());
+        personalTrainer pt =  personal_trainerService.findByUsername(accountResult.getUsername());
 
         return new PTResponseModel(pt);
     }

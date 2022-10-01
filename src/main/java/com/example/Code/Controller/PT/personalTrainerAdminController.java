@@ -1,6 +1,6 @@
 package com.example.Code.Controller.PT;
 
-import com.example.Code.Entity.PT.personal_trainer;
+import com.example.Code.Entity.PT.personalTrainer;
 import com.example.Code.Entity.PT.ptRate;
 import com.example.Code.Model.PTResponseModel;
 import com.example.Code.Service.PT.personal_trainerService;
@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/personal_trainerAdmin")
-public class personal_trainerAdminController {
+public class personalTrainerAdminController {
     @Autowired
     private personal_trainerService personal_trainerService;
     @Autowired
@@ -23,8 +24,8 @@ public class personal_trainerAdminController {
     @RequestMapping("/getALlPT")
     public List<PTResponseModel> getALlPT(){
         List<PTResponseModel> res = new ArrayList<>();
-        for (personal_trainer pt : personal_trainerService.getAll()) {
-            if (pt.getAccount().getRole().getText() == "PERSONAL_TRAINER"){
+        for (personalTrainer pt : personal_trainerService.getAll()) {
+            if (Objects.equals(pt.getAccount().getRole().getText(), "PERSONAL_TRAINER")){
                 PTResponseModel ptResponseModel = new PTResponseModel(pt);
                 ptResponseModel.setRate(getPTRate(ptResponseModel.getId()));
                 res.add(ptResponseModel);
@@ -46,7 +47,7 @@ public class personal_trainerAdminController {
 
     @RequestMapping("/disablePT")
     public String disablePT(@RequestParam("idPT") int idPT){
-        personal_trainer pt = personal_trainerService.findById(idPT);
+        personalTrainer pt = personal_trainerService.findById(idPT);
         pt.getAccount().setEnable(false);
         personal_trainerService.save(pt);
         return "Successful";
@@ -54,7 +55,7 @@ public class personal_trainerAdminController {
 
     @RequestMapping("/enablePT")
     public String enablePT(@RequestParam("idPT") int idPT){
-        personal_trainer pt = personal_trainerService.findById(idPT);
+        personalTrainer pt = personal_trainerService.findById(idPT);
         pt.getAccount().setEnable(true);
         personal_trainerService.save(pt);
         return "Successful";

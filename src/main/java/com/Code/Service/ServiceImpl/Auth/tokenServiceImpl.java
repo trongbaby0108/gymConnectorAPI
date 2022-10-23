@@ -1,4 +1,4 @@
-package com.Code.ServiceImpl.Auth;
+package com.Code.Service.ServiceImpl.Auth;
 
 import com.Code.Entity.Auth.token;
 import com.Code.Service.Auth.tokenService;

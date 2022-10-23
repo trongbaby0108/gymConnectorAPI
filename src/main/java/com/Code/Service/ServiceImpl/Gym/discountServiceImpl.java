@@ -1,4 +1,4 @@
-package com.Code.ServiceImpl.Gym;
+package com.Code.Service.ServiceImpl.Gym;
 
 import java.util.ArrayList;
 import java.util.List;

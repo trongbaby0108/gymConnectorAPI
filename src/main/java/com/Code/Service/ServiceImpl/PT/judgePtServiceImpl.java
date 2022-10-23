@@ -1,4 +1,4 @@
-package com.Code.ServiceImpl.PT;
+package com.Code.Service.ServiceImpl.PT;
 
 import com.Code.Entity.PT.ptRate;
 import com.Code.Service.PT.judgePtService;

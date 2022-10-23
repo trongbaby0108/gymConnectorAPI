@@ -1,4 +1,4 @@
-package com.Code.ServiceImpl.Gym;
+package com.Code.Service.ServiceImpl.Gym;
 
 import com.Code.Entity.Gym.gym;
 import com.Code.Service.Gym.gymService;

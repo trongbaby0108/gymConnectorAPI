@@ -3,7 +3,7 @@ package com.Code.Controller.PT;
 import com.Code.Entity.PT.picPT;
 import com.Code.Model.Uploader;
 import com.Code.Model.ptIMGModel;
-import com.example.Code.Service.PT.personal_trainerService;
+import com.Code.Service.PT.personalTrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +21,7 @@ public class picPTController {
     private com.Code.Service.PT.picPTService picPTService;
 
     @Autowired
-    private personal_trainerService personal_trainerService;
+    private personalTrainerService personal_trainerService;
 
     @PostMapping("/save")
     public String save(

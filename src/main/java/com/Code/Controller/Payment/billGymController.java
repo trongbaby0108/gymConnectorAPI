@@ -6,7 +6,9 @@ import com.Code.Entity.Gym.gym;
 import com.Code.Entity.Payment.billGym;
 import com.Code.Entity.User.user;
 import com.Code.Model.billGymResponse;
-import com.example.Code.Service.Payment.bill_gymService;
+import com.Code.Service.Gym.gymService;
+import com.Code.Service.Payment.billGymService;
+import com.Code.Service.User.userService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,30 +20,30 @@ import java.time.LocalDateTime;
 @RequestMapping("/bill_gym")
 public class billGymController {
     @Autowired
-    private bill_gymService bill_gymService;
+    private billGymService bill_gymService;
 
     @Autowired
-    private com.Code.Service.User.userService userService;
+    private userService userService;
 
     @Autowired
-    private com.Code.Service.Gym.gymService gymService;
+    private gymService gymService;
 
     @Autowired
-    private com.Code.Service.Gym.comboService comboService ;
+    private com.Code.Service.Gym.comboService comboService;
 
     @RequestMapping("checkout")
     public Boolean checkout(
             @RequestParam("idUser") int idUser,
             @RequestParam("idGym") int idGym,
-            @RequestParam("idCombo") int idCombo){
+            @RequestParam("idCombo") int idCombo) {
         user user = userService.findById(idUser);
         gym gym = gymService.findGymById(idGym);
         combo combo = comboService.findByid(idCombo);
-        if(bill_gymService.getByUser(idUser) != null){
+        if (bill_gymService.getByUser(idUser) != null) {
             System.out.println(bill_gymService.getByUser(idUser).toString());
             return false;
         }
-        billGym bill= new billGym();
+        billGym bill = new billGym();
         bill.setUser(user);
         bill.setGym(gym);
         bill.setCombo(combo);

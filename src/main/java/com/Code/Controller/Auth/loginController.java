@@ -9,7 +9,7 @@ import com.Code.Model.jwtRequest;
 import com.Code.Model.userInfoResponse;
 import com.Code.Service.Auth.AccountService;
 import com.Code.Security.JwtTokenUtil;
-import com.example.Code.Service.PT.personal_trainerService;
+import com.Code.Service.PT.personalTrainerService;
 import com.google.gson.Gson;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,25 +26,25 @@ import java.io.UnsupportedEncodingException;
 @RestController
 public class loginController {
     @Autowired
-    private AuthenticationManager authenticationManager ;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     private UserDetailsService userDetailService;
 
     @Autowired
-    private AccountService accountService ;
+    private AccountService accountService;
 
     @Autowired
     private com.Code.Service.User.userService userService;
 
     @Autowired
-    private personal_trainerService personal_trainerService;
+    private personalTrainerService personal_trainerService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
     @PostMapping(value = "/login")
-    public String createToken(@RequestBody jwtRequest jwtRequest) throws Exception{
+    public String createToken(@RequestBody jwtRequest jwtRequest) throws Exception {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -52,9 +52,8 @@ public class loginController {
                             jwtRequest.getPassword()
                     )
             );
-        }
-        catch (BadCredentialsException e){
-            throw new Exception("Incorect....",e);
+        } catch (BadCredentialsException e) {
+            throw new Exception("Incorect....", e);
         }
         final UserDetails userDetails = userDetailService.loadUserByUsername(
                 jwtRequest.getUsername()
@@ -64,7 +63,7 @@ public class loginController {
 
 
     @GetMapping(value = "/getUserInfo")
-    public userInfoResponse getUserInfo(@RequestParam("jwt") String jwt){
+    public userInfoResponse getUserInfo(@RequestParam("jwt") String jwt) {
         //Properties prop = new Properties();
         String[] pieces = jwt.split("\\.");
         String b64payload = pieces[1];
@@ -76,12 +75,12 @@ public class loginController {
         }
         jwtDecodeModel jwtDecodeModel = new Gson().fromJson(jsonString, jwtDecodeModel.class);
         Account accountResult = accountService.findByUsername(jwtDecodeModel.sub);
-        user user =  userService.findByUserName(accountResult.getUsername());
+        user user = userService.findByUserName(accountResult.getUsername());
         return new userInfoResponse(user);
     }
 
     @GetMapping(value = "/getPTInfo")
-    public PTResponseModel getPTInfo(@RequestParam("jwt") String jwt){
+    public PTResponseModel getPTInfo(@RequestParam("jwt") String jwt) {
         //Properties prop = new Properties();
         String[] pieces = jwt.split("\\.");
         String b64payload = pieces[1];
@@ -93,7 +92,7 @@ public class loginController {
         }
         jwtDecodeModel jwtDecodeModel = new Gson().fromJson(jsonString, jwtDecodeModel.class);
         Account accountResult = accountService.findByUsername(jwtDecodeModel.sub);
-        personalTrainer pt =  personal_trainerService.findByUsername(accountResult.getUsername());
+        personalTrainer pt = personal_trainerService.findByUsername(accountResult.getUsername());
 
         return new PTResponseModel(pt);
     }

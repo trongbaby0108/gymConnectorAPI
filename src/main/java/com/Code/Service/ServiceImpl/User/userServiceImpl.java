@@ -1,4 +1,4 @@
-package com.Code.ServiceImpl.User;
+package com.Code.Service.ServiceImpl.User;
 
 import com.Code.Entity.User.user;
 import com.Code.Service.User.userService;

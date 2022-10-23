@@ -9,9 +9,9 @@ import com.Code.Model.gymModel;
 import com.Code.Model.judge_PTModel;
 import com.Code.Model.judge_gymModel;
 import com.Code.Service.Gym.gymService;
-import com.example.Code.Service.Gym.judge_gymService;
-import com.example.Code.Service.PT.judge_ptService;
-import com.example.Code.Service.PT.personal_trainerService;
+import com.Code.Service.Gym.judgeGymService;
+import com.Code.Service.PT.judgePtService;
+import com.Code.Service.PT.personalTrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,25 +28,25 @@ public class HomeController {
     private gymService _gymService;
 
     @Autowired
-    private personal_trainerService personal_trainerService;
+    private personalTrainerService personal_trainerService;
 
     @Autowired
     private com.Code.Service.Gym.comboService comboService;
 
     @Autowired
-    private judge_gymService judge_gymService;
+    private judgeGymService judge_gymService;
 
     @Autowired
-    private com.Code.Service.User.userService userService ;
+    private com.Code.Service.User.userService userService;
 
     @Autowired
-    private judge_ptService judge_ptService;
+    private judgePtService judge_ptService;
 
     @RequestMapping("/getPT")
-    public List<PTResponseModel> getPT(){
+    public List<PTResponseModel> getPT() {
         List<PTResponseModel> ptModels = new ArrayList<>();
-        for (personalTrainer pt :personal_trainerService.getAll()){
-            if(pt.getAccount().isEnable()){
+        for (personalTrainer pt : personal_trainerService.getAll()) {
+            if (pt.getAccount().isEnable()) {
                 PTResponseModel ptModel = new PTResponseModel(pt);
                 ptModel.setRate(getPTRate(ptModel.getId()));
                 ptModels.add(ptModel);
@@ -56,7 +56,7 @@ public class HomeController {
     }
 
     @GetMapping("/getGym")
-    public List<gymModel> getGym(){
+    public List<gymModel> getGym() {
         List<gymModel> res = new ArrayList<>();
         _gymService.getAll().forEach(gym -> {
             gymModel gymModel = new gymModel(gym);
@@ -66,31 +66,31 @@ public class HomeController {
         return res;
     }
 
-    public float getGymRate(int id){
+    public float getGymRate(int id) {
         float res = 0;
         int count = 0;
-        for (com.Code.Entity.Gym.gymRate gymRate:judge_gymService.getAll()) {
+        for (com.Code.Entity.Gym.gymRate gymRate : judge_gymService.getAll()) {
             res += gymRate.getGym().getId() == id ? gymRate.getVote() : 0;
             count += gymRate.getGym().getId() == id ? 1 : 0;
         }
-        return res/count;
+        return res / count;
     }
 
     @GetMapping("/getCombo")
-    public List<combo> getCombo(){
+    public List<combo> getCombo() {
         return comboService.getAll();
     }
 
     @GetMapping("/getByGym")
-    public List<combo> getByGym(@RequestParam int id){
+    public List<combo> getByGym(@RequestParam int id) {
         return comboService.getByGym(id);
     }
 
     @RequestMapping("/getPTByGym")
-    public List<PTResponseModel> getPTByGym(@RequestParam int id){
+    public List<PTResponseModel> getPTByGym(@RequestParam int id) {
         List<PTResponseModel> ptModels = new ArrayList<>();
-        for (personalTrainer pt :personal_trainerService.getPTByGym(id)){
-            if(pt.getAccount().isEnable()){
+        for (personalTrainer pt : personal_trainerService.getPTByGym(id)) {
+            if (pt.getAccount().isEnable()) {
                 PTResponseModel ptModel = new PTResponseModel(pt);
                 ptModel.setRate(getPTRate(pt.getId()));
                 ptModels.add(ptModel);
@@ -99,20 +99,20 @@ public class HomeController {
         return ptModels;
     }
 
-    public float getPTRate(int id){
+    public float getPTRate(int id) {
         float res = 0;
         int count = 0;
-        for (com.Code.Entity.PT.ptRate ptRate:judge_ptService.getByPT(id)) {
+        for (com.Code.Entity.PT.ptRate ptRate : judge_ptService.getByPT(id)) {
             res += ptRate.getVote();
-            count ++;
+            count++;
         }
-        return res/count;
+        return res / count;
     }
 
     @GetMapping("/getJudgeByGym")
-    public List<judge_gymModel> getJudgeByGym(@RequestParam int id){
+    public List<judge_gymModel> getJudgeByGym(@RequestParam int id) {
         List<judge_gymModel> res = new ArrayList<>();
-        for (gymRate gymRate: judge_gymService.getByGym(id)) {
+        for (gymRate gymRate : judge_gymService.getByGym(id)) {
             judge_gymModel judge_gymModel = new judge_gymModel(gymRate);
             res.add(judge_gymModel);
         }
@@ -120,12 +120,7 @@ public class HomeController {
     }
 
     @GetMapping("/addComment")
-    public String addComment(
-            @RequestParam String content,
-            @RequestParam float vote ,
-            @RequestParam int gymId,
-            @RequestParam int userId
-    ){
+    public String addComment(@RequestParam String content, @RequestParam float vote, @RequestParam int gymId, @RequestParam int userId) {
         gymRate gymRate = new gymRate();
         gymRate.setContent(content);
         gymRate.setVote(vote);
@@ -137,9 +132,9 @@ public class HomeController {
 
 
     @GetMapping("/getJudgeByPT")
-    public List<judge_PTModel> getJudgeByPT(@RequestParam int id){
+    public List<judge_PTModel> getJudgeByPT(@RequestParam int id) {
         List<judge_PTModel> res = new ArrayList<>();
-        for (ptRate judge_pt: judge_ptService.getByPT(id)) {
+        for (ptRate judge_pt : judge_ptService.getByPT(id)) {
             judge_PTModel judge_PTModel = new judge_PTModel(judge_pt);
             res.add(judge_PTModel);
         }
@@ -147,12 +142,7 @@ public class HomeController {
     }
 
     @GetMapping("/addCommentPT")
-    public String addCommentPT(
-            @RequestParam String content,
-            @RequestParam float vote ,
-            @RequestParam int ptID,
-            @RequestParam int userId
-    ){
+    public String addCommentPT(@RequestParam String content, @RequestParam float vote, @RequestParam int ptID, @RequestParam int userId) {
         ptRate ptRate = new ptRate();
         ptRate.setComment(content);
         ptRate.setVote(vote);

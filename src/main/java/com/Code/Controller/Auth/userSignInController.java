@@ -4,7 +4,6 @@ import com.Code.Entity.Auth.Account;
 import com.Code.Entity.Auth.token;
 import com.Code.Entity.User.user;
 import com.Code.Model.*;
-import com.example.Code.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -27,14 +26,14 @@ public class userSignInController {
     private com.Code.Service.Auth.AccountService AccountService;
 
     @Autowired
-    private JavaMailSender javaMailSender ;
+    private JavaMailSender javaMailSender;
 
     @Autowired
     private com.Code.Service.Auth.tokenService tokenService;
 
-    public void sendEmail(String toEmail ,
+    public void sendEmail(String toEmail,
                           String subject,
-                          String body){
+                          String body) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom("ngaitrong0108@gmail.com");
         mailMessage.setTo(toEmail);
@@ -51,9 +50,9 @@ public class userSignInController {
             @RequestParam("address") String address,
             @RequestParam("email") String email,
             @RequestParam("phone") String phone
-    ){
+    ) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        Account account = new Account(username,bCryptPasswordEncoder.encode(password),email,phone,false, role.USER, typeAccount.NORMAL);
+        Account account = new Account(username, bCryptPasswordEncoder.encode(password), email, phone, false, role.USER, typeAccount.NORMAL);
         AccountService.save(account);
         user user = new user();
         user.setAccount(account);
@@ -65,7 +64,7 @@ public class userSignInController {
 
     @PostMapping("/uploadAvatar")
     private String uploadAvatar(@RequestParam("username") String username,
-                                @RequestParam("avatar") MultipartFile avatar){
+                                @RequestParam("avatar") MultipartFile avatar) {
         user user = userService.findByUserName(username);
         Uploader uploader = new Uploader();
         user.setAvatar(uploader.uploadFile(avatar));
@@ -74,65 +73,63 @@ public class userSignInController {
     }
 
     @RequestMapping("/sendToken")
-    public String sendToken(@RequestParam("username") String username){
+    public String sendToken(@RequestParam("username") String username) {
         Account account = AccountService.findByUsername(username);
         token token = new token();
         token.genNewToken();
         token.setTokenType(tokenType.REPASSWORD);
         token.setAccount(account);
         tokenService.save(token);
-        sendEmail(account.getEmail(),"Token",token.getToken());
+        sendEmail(account.getEmail(), "Token", token.getToken());
         return "Succesfull";
     }
 
     @RequestMapping("/confirmToken")
-    public String confirmToken(@RequestParam("token") String tokenString, @RequestParam("username")String username){
-        token token =tokenService.findByToken(tokenString);
-        if(
-                token.getAccount().getUsername().equals(username)&&
+    public String confirmToken(@RequestParam("token") String tokenString, @RequestParam("username") String username) {
+        token token = tokenService.findByToken(tokenString);
+        if (
+                token.getAccount().getUsername().equals(username) &&
                         token.getExpiryAt().isAfter(LocalDateTime.now())
-        )
-        {
+        ) {
             Account acc = token.getAccount();
             acc.setEnable(true);
             AccountService.save(acc);
             return "Successfully";
-        }
-        else
+        } else
             return "Failed";
     }
 
     @RequestMapping("/forgetPassword")
-    public void forgetPassword (
+    public void forgetPassword(
             @RequestParam("username") String username,
             @RequestParam("newPassword") String newPassword
-    ){
+    ) {
         Account account = AccountService.findByUsername(username);
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         account.setPassword(bCryptPasswordEncoder.encode(newPassword));
     }
 
     @RequestMapping("/changePassword")
-    public void changePassword (
+    public void changePassword(
             @RequestParam("username") String username,
             @RequestParam("password") String password,
             @RequestParam("newPassword") String newPassword
-    ) throws Exception{
+    ) throws Exception {
         Account account = AccountService.findByUsername(username);
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        if(bCryptPasswordEncoder.encode(password).equals(account.getPassword()))
+        if (bCryptPasswordEncoder.encode(password).equals(account.getPassword()))
             account.setPassword(bCryptPasswordEncoder.encode(newPassword));
         else throw new Exception("Password not Match");
     }
 
     @RequestMapping("/createGoogleUser")
-    public userInfoResponse createGoogleUser (
+    public userInfoResponse createGoogleUser(
             @RequestParam("email") String email,
-            @RequestParam("name")String name,
-            @RequestParam("avatar")String avatar
-    ){
-        if(AccountService.findByUsername(email) == null) {
-            Account account = new Account(email,"",email,"",true, role.USER, typeAccount.GOOGLE);
+            @RequestParam("name") String name,
+            @RequestParam("avatar") String avatar
+    ) {
+        if (AccountService.findByUsername(email) == null) {
+            Account account = new Account(email, "", email, "", true, role.USER, typeAccount.GOOGLE);
             AccountService.save(account);
             user user = new user();
             user.setAccount(account);
@@ -142,10 +139,9 @@ public class userSignInController {
             userService.save(user);
             userInfoResponse userInfoResponse = new userInfoResponse(user);
             return userInfoResponse;
-        }
-        else{
+        } else {
             Account accountResult = AccountService.findByUsername(email);
-            user user =  userService.findByUserName(accountResult.getUsername());
+            user user = userService.findByUserName(accountResult.getUsername());
             userInfoResponse userInfoResponse = new userInfoResponse(user);
             return userInfoResponse;
         }
@@ -153,13 +149,13 @@ public class userSignInController {
     }
 
     @RequestMapping("/createFaceBookUser")
-    public userInfoResponse createFaceBookUser (
+    public userInfoResponse createFaceBookUser(
             @RequestParam("email") String email,
-            @RequestParam("name")String name,
-            @RequestParam("avatar")String avatar
-    ){
-        if(AccountService.findByUsername(email) == null) {
-            Account account = new Account(email,"",email,"",true, role.USER, typeAccount.FACEBOOK);
+            @RequestParam("name") String name,
+            @RequestParam("avatar") String avatar
+    ) {
+        if (AccountService.findByUsername(email) == null) {
+            Account account = new Account(email, "", email, "", true, role.USER, typeAccount.FACEBOOK);
             AccountService.save(account);
             user user = new user();
             user.setAccount(account);
@@ -169,10 +165,9 @@ public class userSignInController {
             userService.save(user);
             userInfoResponse userInfoResponse = new userInfoResponse(user);
             return userInfoResponse;
-        }
-        else{
+        } else {
             Account accountResult = AccountService.findByUsername(email);
-            user user =  userService.findByUserName(accountResult.getUsername());
+            user user = userService.findByUserName(accountResult.getUsername());
             userInfoResponse userInfoResponse = new userInfoResponse(user);
             return userInfoResponse;
         }

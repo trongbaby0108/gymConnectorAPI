@@ -3,7 +3,8 @@ package com.Code.Controller.PT;
 import com.Code.Entity.PT.personalTrainer;
 import com.Code.Entity.PT.ptRate;
 import com.Code.Model.PTResponseModel;
-import com.example.Code.Service.PT.personal_trainerService;
+import com.Code.Service.PT.judgePtService;
+import com.Code.Service.PT.personalTrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,9 +18,9 @@ import java.util.Objects;
 @RequestMapping("/personal_trainerAdmin")
 public class personalTrainerAdminController {
     @Autowired
-    private personal_trainerService personal_trainerService;
+    private personalTrainerService personal_trainerService;
     @Autowired
-    private com.example.Code.Service.PT.judge_ptService judge_ptService;
+    private judgePtService judge_ptService;
 
     @RequestMapping("/getALlPT")
     public List<PTResponseModel> getALlPT(){

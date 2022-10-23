@@ -1,4 +1,4 @@
-package com.Code.ServiceImpl.User;
+package com.Code.Service.ServiceImpl.User;
 
 import com.Code.Entity.Auth.Account;
 import com.Code.Service.Auth.AccountService;

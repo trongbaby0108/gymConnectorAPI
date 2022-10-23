@@ -2,8 +2,8 @@ package com.Code.Controller.PT;
 
 import com.Code.Entity.PT.personalTrainer;
 import com.Code.Model.PTResponseModel;
-import com.example.Code.Service.PT.personal_trainerService;
-import com.example.Code.Service.Payment.bill_ptService;
+import com.Code.Service.PT.personalTrainerService;
+import com.Code.Service.Payment.billPtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/personal_trainer")
 public class personalTrainerController {
     @Autowired
-    private personal_trainerService personal_trainerService;
+    private personalTrainerService personal_trainerService;
 
     @Autowired
     private com.Code.Service.Auth.AccountService AccountService;
@@ -22,7 +22,7 @@ public class personalTrainerController {
     private com.Code.Service.User.userService userService ;
 
     @Autowired
-    private bill_ptService bill_ptService;
+    private billPtService bill_ptService;
 
 
     @RequestMapping("/update")

@@ -3,8 +3,9 @@ package com.Code.Controller.User;
 import com.Code.Entity.Payment.billPt;
 import com.Code.Entity.User.user;
 import com.Code.Model.userInfoResponse;
-import com.example.Code.Service.PT.personal_trainerService;
-import com.example.Code.Service.Payment.bill_ptService;
+import com.Code.Service.PT.personalTrainerService;
+import com.Code.Service.Payment.billPtService;
+import com.Code.Service.User.userService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,13 +18,13 @@ import java.util.List;
 @RequestMapping("/user")
 public class userController {
     @Autowired
-    private com.Code.Service.User.userService userService ;
+    private userService userService ;
 
     @Autowired
-    private bill_ptService bill_ptService;
+    private billPtService bill_ptService;
 
     @Autowired
-    private personal_trainerService personal_trainerService;
+    private personalTrainerService personal_trainerService;
 
     @RequestMapping("/update")
     public String update(

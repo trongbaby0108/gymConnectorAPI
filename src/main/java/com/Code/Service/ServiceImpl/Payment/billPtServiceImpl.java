@@ -1,4 +1,4 @@
-package com.Code.ServiceImpl.Payment;
+package com.Code.Service.ServiceImpl.Payment;
 
 import com.Code.Entity.Payment.billPt;
 import com.Code.Repository.Payment.bill_ptRepository;

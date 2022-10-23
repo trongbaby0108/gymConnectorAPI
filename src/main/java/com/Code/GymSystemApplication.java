@@ -6,10 +6,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
-public class DoanCosoBackendApplication {
+public class GymSystemApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DoanCosoBackendApplication.class, args);
+		SpringApplication.run(GymSystemApplication.class, args);
 	}
 
 }

@@ -3,7 +3,6 @@ package com.Code.Controller.User;
 import com.Code.Entity.Payment.billPt;
 import com.Code.Entity.User.user;
 import com.Code.Model.userInfoResponse;
-import com.Code.Service.PT.personalTrainerService;
 import com.Code.Service.Payment.billPtService;
 import com.Code.Service.User.userService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +17,10 @@ import java.util.List;
 @RequestMapping("/user")
 public class userController {
     @Autowired
-    private userService userService ;
+    private userService userService;
 
     @Autowired
     private billPtService bill_ptService;
-
-    @Autowired
-    private personalTrainerService personal_trainerService;
 
     @RequestMapping("/update")
     public String update(
@@ -32,8 +28,7 @@ public class userController {
             @RequestParam String name,
             @RequestParam String phone,
             @RequestParam String email,
-            @RequestParam String address
-    ){
+            @RequestParam String address) {
         user user = userService.findById(id);
         user.getAccount().setEmail(email);
         user.getAccount().setPhone(phone);
@@ -44,15 +39,14 @@ public class userController {
     }
 
     @RequestMapping("/getUserByPT")
-    public List<userInfoResponse> getUserByPT(@RequestParam("idPT") int idPT){
+    public List<userInfoResponse> getUserByPT(@RequestParam("idPT") int idPT) {
         List<userInfoResponse> res = new ArrayList<>();
-        for (billPt bill:bill_ptService.getAll()) {
-            if(bill.getPersonal_trainer().getId()== idPT && bill.getUser().getAccount().isEnable())
-            {
+        for (billPt bill : bill_ptService.getAll()) {
+            if (bill.getPersonal_trainer().getId() == idPT && bill.getUser().getAccount().isEnable()) {
                 userInfoResponse userInfoResponse = new userInfoResponse(bill.getUser());
                 res.add(userInfoResponse);
             }
         }
-        return res ;
+        return res;
     }
 }

@@ -3,7 +3,6 @@ package com.Code.Controller.PT;
 import com.Code.Entity.PT.personalTrainer;
 import com.Code.Model.PTResponseModel;
 import com.Code.Service.PT.personalTrainerService;
-import com.Code.Service.Payment.billPtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,16 +14,6 @@ public class personalTrainerController {
     @Autowired
     private personalTrainerService personal_trainerService;
 
-    @Autowired
-    private com.Code.Service.Auth.AccountService AccountService;
-
-    @Autowired
-    private com.Code.Service.User.userService userService ;
-
-    @Autowired
-    private billPtService bill_ptService;
-
-
     @RequestMapping("/update")
     public PTResponseModel update(
             @RequestParam int id,
@@ -32,8 +21,7 @@ public class personalTrainerController {
             @RequestParam String phone,
             @RequestParam String email,
             @RequestParam String address,
-            @RequestParam int price
-    ){
+            @RequestParam int price) {
         personalTrainer pt = personal_trainerService.findById(id);
         pt.getAccount().setEmail(email);
         pt.getAccount().setPhone(phone);

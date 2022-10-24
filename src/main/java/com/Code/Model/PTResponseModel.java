@@ -5,17 +5,17 @@ import lombok.Data;
 
 @Data
 public class PTResponseModel {
-    private int id ;
-    private String username ;
-    private String name ;
+    private int id;
+    private String username;
+    private String name;
     private String address;
-    private String phone ;
-    private String email ;
+    private String phone;
+    private String email;
     private String avatar;
     private int fee;
-    private String Role ;
+    private String Role;
     private float rate = 5;
-    private boolean enable ;
+    private boolean enable;
 
     private gymModel gym;
 

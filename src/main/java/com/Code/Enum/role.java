@@ -1,4 +1,4 @@
-package com.Code.Model;
+package com.Code.Enum;
 
 
 public enum role {

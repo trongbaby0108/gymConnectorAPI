@@ -1,7 +1,7 @@
 package com.Code.Controller.Gym;
 
 import com.Code.Entity.Gym.gym;
-import com.Code.Model.Uploader;
+import com.Code.Util.Uploader;
 import com.Code.Service.Gym.gymService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

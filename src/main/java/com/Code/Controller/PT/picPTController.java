@@ -1,7 +1,7 @@
 package com.Code.Controller.PT;
 
 import com.Code.Entity.PT.picPT;
-import com.Code.Model.Uploader;
+import com.Code.Util.Uploader;
 import com.Code.Model.ptIMGModel;
 import com.Code.Service.PT.personalTrainerService;
 import org.springframework.beans.factory.annotation.Autowired;

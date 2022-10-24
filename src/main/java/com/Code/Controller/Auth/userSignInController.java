@@ -3,7 +3,11 @@ package com.Code.Controller.Auth;
 import com.Code.Entity.Auth.Account;
 import com.Code.Entity.Auth.token;
 import com.Code.Entity.User.user;
+import com.Code.Enum.role;
+import com.Code.Enum.tokenType;
+import com.Code.Enum.typeAccount;
 import com.Code.Model.*;
+import com.Code.Util.Uploader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -32,8 +36,8 @@ public class userSignInController {
     private com.Code.Service.Auth.tokenService tokenService;
 
     public void sendEmail(String toEmail,
-                          String subject,
-                          String body) {
+            String subject,
+            String body) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom("ngaitrong0108@gmail.com");
         mailMessage.setTo(toEmail);
@@ -49,10 +53,10 @@ public class userSignInController {
             @RequestParam("name") String name,
             @RequestParam("address") String address,
             @RequestParam("email") String email,
-            @RequestParam("phone") String phone
-    ) {
+            @RequestParam("phone") String phone) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        Account account = new Account(username, bCryptPasswordEncoder.encode(password), email, phone, false, role.USER, typeAccount.NORMAL);
+        Account account = new Account(username, bCryptPasswordEncoder.encode(password), email, phone, false, role.USER,
+                typeAccount.NORMAL);
         AccountService.save(account);
         user user = new user();
         user.setAccount(account);
@@ -64,7 +68,7 @@ public class userSignInController {
 
     @PostMapping("/uploadAvatar")
     private String uploadAvatar(@RequestParam("username") String username,
-                                @RequestParam("avatar") MultipartFile avatar) {
+            @RequestParam("avatar") MultipartFile avatar) {
         user user = userService.findByUserName(username);
         Uploader uploader = new Uploader();
         user.setAvatar(uploader.uploadFile(avatar));
@@ -87,10 +91,8 @@ public class userSignInController {
     @RequestMapping("/confirmToken")
     public String confirmToken(@RequestParam("token") String tokenString, @RequestParam("username") String username) {
         token token = tokenService.findByToken(tokenString);
-        if (
-                token.getAccount().getUsername().equals(username) &&
-                        token.getExpiryAt().isAfter(LocalDateTime.now())
-        ) {
+        if (token.getAccount().getUsername().equals(username) &&
+                token.getExpiryAt().isAfter(LocalDateTime.now())) {
             Account acc = token.getAccount();
             acc.setEnable(true);
             AccountService.save(acc);
@@ -102,8 +104,7 @@ public class userSignInController {
     @RequestMapping("/forgetPassword")
     public void forgetPassword(
             @RequestParam("username") String username,
-            @RequestParam("newPassword") String newPassword
-    ) {
+            @RequestParam("newPassword") String newPassword) {
         Account account = AccountService.findByUsername(username);
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         account.setPassword(bCryptPasswordEncoder.encode(newPassword));
@@ -113,21 +114,20 @@ public class userSignInController {
     public void changePassword(
             @RequestParam("username") String username,
             @RequestParam("password") String password,
-            @RequestParam("newPassword") String newPassword
-    ) throws Exception {
+            @RequestParam("newPassword") String newPassword) throws Exception {
         Account account = AccountService.findByUsername(username);
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         if (bCryptPasswordEncoder.encode(password).equals(account.getPassword()))
             account.setPassword(bCryptPasswordEncoder.encode(newPassword));
-        else throw new Exception("Password not Match");
+        else
+            throw new Exception("Password not Match");
     }
 
     @RequestMapping("/createGoogleUser")
     public userInfoResponse createGoogleUser(
             @RequestParam("email") String email,
             @RequestParam("name") String name,
-            @RequestParam("avatar") String avatar
-    ) {
+            @RequestParam("avatar") String avatar) {
         if (AccountService.findByUsername(email) == null) {
             Account account = new Account(email, "", email, "", true, role.USER, typeAccount.GOOGLE);
             AccountService.save(account);
@@ -152,8 +152,7 @@ public class userSignInController {
     public userInfoResponse createFaceBookUser(
             @RequestParam("email") String email,
             @RequestParam("name") String name,
-            @RequestParam("avatar") String avatar
-    ) {
+            @RequestParam("avatar") String avatar) {
         if (AccountService.findByUsername(email) == null) {
             Account account = new Account(email, "", email, "", true, role.USER, typeAccount.FACEBOOK);
             AccountService.save(account);
@@ -173,6 +172,5 @@ public class userSignInController {
         }
 
     }
-
 
 }

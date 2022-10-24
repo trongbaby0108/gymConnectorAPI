@@ -3,10 +3,10 @@ package com.Code.Controller.Auth;
 import com.Code.Entity.Auth.Account;
 import com.Code.Entity.Auth.token;
 import com.Code.Entity.PT.personalTrainer;
-import com.Code.Model.Uploader;
-import com.Code.Model.role;
-import com.Code.Model.tokenType;
-import com.Code.Model.typeAccount;
+import com.Code.Enum.role;
+import com.Code.Util.Uploader;
+import com.Code.Enum.tokenType;
+import com.Code.Enum.typeAccount;
 import com.Code.Service.PT.personalTrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -39,8 +39,8 @@ public class personalTrainerSignInController {
     private com.Code.Service.Auth.tokenService tokenService;
 
     public void sendEmail(String toEmail,
-                          String subject,
-                          String body) {
+            String subject,
+            String body) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom("ngaitrong0108@gmail.com");
         mailMessage.setTo(toEmail);
@@ -58,8 +58,7 @@ public class personalTrainerSignInController {
             @RequestParam("email") String email,
             @RequestParam("phone") String phone,
             @RequestParam("gym") int gymID,
-            @RequestParam("price") int price
-    ) {
+            @RequestParam("price") int price) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         Account account = new Account(
                 username,
@@ -82,7 +81,7 @@ public class personalTrainerSignInController {
 
     @PostMapping("/uploadAvatar")
     private String uploadAvatar(@RequestParam("username") String username,
-                                @RequestParam("avatar") MultipartFile avatar) {
+            @RequestParam("avatar") MultipartFile avatar) {
         personalTrainer personal_trainer = personalTrainerService.findByUsername(username);
         Uploader uploader = new Uploader();
         personal_trainer.setAvatar(uploader.uploadFile(avatar));
@@ -103,12 +102,10 @@ public class personalTrainerSignInController {
 
     @RequestMapping("/confirmToken")
     public String confirmToken(@RequestParam("token") String tokenString,
-                               @RequestParam("username") String username) {
+            @RequestParam("username") String username) {
         token token = tokenService.findByToken(tokenString);
-        if (
-                token.getAccount().getUsername().equals(username) &&
-                        token.getExpiryAt().isAfter(LocalDateTime.now())
-        ) {
+        if (token.getAccount().getUsername().equals(username) &&
+                token.getExpiryAt().isAfter(LocalDateTime.now())) {
             Account acc = token.getAccount();
             acc.setEnable(true);
             AccountService.save(acc);
@@ -120,8 +117,7 @@ public class personalTrainerSignInController {
     @RequestMapping("/forgetPassword")
     public void forgetPassword(
             @RequestParam("username") String username,
-            @RequestParam("newPassword") String newPassword
-    ) {
+            @RequestParam("newPassword") String newPassword) {
         Account account = AccountService.findByUsername(username);
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         account.setPassword(bCryptPasswordEncoder.encode(newPassword));
@@ -131,13 +127,13 @@ public class personalTrainerSignInController {
     public void changePassword(
             @RequestParam("username") String username,
             @RequestParam("password") String password,
-            @RequestParam("newPassword") String newPassword
-    ) throws Exception {
+            @RequestParam("newPassword") String newPassword) throws Exception {
         Account account = AccountService.findByUsername(username);
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         if (bCryptPasswordEncoder.matches(password, account.getPassword())) {
             account.setPassword(bCryptPasswordEncoder.encode(newPassword));
             AccountService.save(account);
-        } else throw new Exception("Password not Match");
+        } else
+            throw new Exception("Password not Match");
     }
 }

@@ -1,6 +1,6 @@
 package com.Code.Entity.Auth;
 
-import com.Code.Model.tokenType;
+import com.Code.Enum.tokenType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

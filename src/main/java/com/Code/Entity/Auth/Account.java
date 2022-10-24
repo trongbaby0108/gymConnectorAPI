@@ -1,7 +1,7 @@
 package com.Code.Entity.Auth;
 
-import com.Code.Model.role;
-import com.Code.Model.typeAccount;
+import com.Code.Enum.role;
+import com.Code.Enum.typeAccount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,18 +18,19 @@ import javax.persistence.*;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name= "accountId")
-    private int id ;
+    @Column(name = "accountId")
+    private int id;
     @Column(unique = true)
     private String username;
     private String password;
-    private String email ;
-    private String phone ;
+    private String email;
+    private String phone;
     private boolean enable;
     private typeAccount typeAccount;
     private role role;
 
-    public Account(String username, String password, String email, String phone, boolean enable, role role,typeAccount typeAccount) {
+    public Account(String username, String password, String email, String phone, boolean enable, role role,
+            typeAccount typeAccount) {
         this.username = username;
         this.password = password;
         this.email = email;

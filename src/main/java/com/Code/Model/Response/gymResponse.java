@@ -4,7 +4,7 @@ import com.Code.Entity.Gym.gym;
 import lombok.Data;
 
 @Data
-public class gymModel {
+public class gymResponse {
     private int id ;
     private String name ;
     private String address ;
@@ -13,7 +13,7 @@ public class gymModel {
     private String avatar;
     private float rate;
 
-    public gymModel(gym gym) {
+    public gymResponse(gym gym) {
         this.id = gym.getId();
         this.name = gym.getName();
         this.address = gym.getAddress();

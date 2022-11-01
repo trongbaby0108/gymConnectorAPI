@@ -1,10 +1,11 @@
-package com.Code.Model;
+package com.Code.Model.Response;
 
 import com.Code.Entity.PT.personalTrainer;
+import com.Code.Model.gymModel;
 import lombok.Data;
 
 @Data
-public class PTResponseModel {
+public class PTResponse {
     private int id;
     private String username;
     private String name;
@@ -19,7 +20,7 @@ public class PTResponseModel {
 
     private gymModel gym;
 
-    public PTResponseModel(personalTrainer pt) {
+    public PTResponse(personalTrainer pt) {
         this.id = pt.getId();
         this.username = pt.getAccount().getUsername();
         this.name = pt.getName();

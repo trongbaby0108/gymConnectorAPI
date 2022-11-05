@@ -1,8 +1,10 @@
 package com.Code.Service.ServiceImpl.Gym;
 
 import com.Code.Entity.Gym.gym;
+import com.Code.Exception.NotFoundException;
 import com.Code.Service.Gym.gymService;
 import com.Code.Repository.Gym.gymRepository;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +13,11 @@ import java.util.List;
 @Service
 public class gymServiceImpl implements gymService {
 
-    @Autowired
     private gymRepository gymRepo;
+
+    public gymServiceImpl(gymRepository gymRepo) {
+        this.gymRepo = gymRepo;
+    }
 
     @Override
     public List<gym> getAll() {
@@ -25,8 +30,9 @@ public class gymServiceImpl implements gymService {
     }
 
     @Override
+    @SneakyThrows
     public gym findGymById(int id) {
-        return gymRepo.findById(id).get();
+        return gymRepo.findById(id).orElseThrow(() -> new NotFoundException("not found this gym"));
     }
 
     @Override

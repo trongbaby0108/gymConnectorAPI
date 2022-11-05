@@ -11,11 +11,11 @@ public class ptRateResponse {
     private String name ;
     private String avatar;
 
-    public ptRateResponse(ptRate judge_pt) {
-        this.id = judge_pt.getId();
-        this.content = judge_pt.getComment();
-        this.vote = judge_pt.getVote();
-        this.avatar = judge_pt.getUser().getAvatar();
-        this.name= judge_pt.getUser().getName();
+    public ptRateResponse(ptRate ptRate) {
+        this.id = ptRate.getId();
+        this.content = ptRate.getComment();
+        this.vote = ptRate.getVote();
+        this.avatar = ptRate.getUser().getAvatar();
+        this.name= ptRate.getUser().getName();
     }
 }

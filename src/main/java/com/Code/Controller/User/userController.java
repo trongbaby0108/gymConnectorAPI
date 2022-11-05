@@ -2,13 +2,12 @@ package com.Code.Controller.User;
 
 import com.Code.Entity.Payment.billPt;
 import com.Code.Entity.User.user;
-import com.Code.Model.userInfoResponse;
+import com.Code.Model.Request.updateUserRequest;
+import com.Code.Model.Response.userInfoResponse;
 import com.Code.Service.Payment.billPtService;
 import com.Code.Service.User.userService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,18 +21,13 @@ public class userController {
     @Autowired
     private billPtService bill_ptService;
 
-    @RequestMapping("/update")
-    public String update(
-            @RequestParam int id,
-            @RequestParam String name,
-            @RequestParam String phone,
-            @RequestParam String email,
-            @RequestParam String address) {
-        user user = userService.findById(id);
-        user.getAccount().setEmail(email);
-        user.getAccount().setPhone(phone);
-        user.setAddress(address);
-        user.setName(name);
+    @PostMapping("/update")
+    public String update(@RequestBody updateUserRequest updateUserRequest) {
+        user user = userService.findById(updateUserRequest.getId());
+        user.getAccount().setEmail(updateUserRequest.getEmail());
+        user.getAccount().setPhone(updateUserRequest.getPhone());
+        user.setAddress(updateUserRequest.getAddress());
+        user.setName(updateUserRequest.getName());
         userService.save(user);
         return "successful";
     }

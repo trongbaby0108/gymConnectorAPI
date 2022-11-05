@@ -9,6 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+
 @Table(name = "gym")
 public class gym {
     @Id
@@ -22,4 +23,12 @@ public class gym {
     private String avatar;
     private boolean enable = true;
 
+    public gym(String name, String address, String phone, String email, String avatar, boolean enable) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.avatar = avatar;
+        this.enable = enable;
+    }
 }

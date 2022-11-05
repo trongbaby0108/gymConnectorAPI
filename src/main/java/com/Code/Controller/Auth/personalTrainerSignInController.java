@@ -4,18 +4,18 @@ import com.Code.Entity.Auth.Account;
 import com.Code.Entity.Auth.token;
 import com.Code.Entity.PT.personalTrainer;
 import com.Code.Enum.role;
-import com.Code.Util.Uploader;
 import com.Code.Enum.tokenType;
 import com.Code.Enum.typeAccount;
+import com.Code.Model.Request.ptSignUpRequest;
+import com.Code.Service.Auth.AccountService;
+import com.Code.Service.Auth.tokenService;
+import com.Code.Service.Gym.gymService;
 import com.Code.Service.PT.personalTrainerService;
+import com.Code.Util.MailSender;
+import com.Code.Util.Uploader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -27,55 +27,37 @@ public class personalTrainerSignInController {
     private personalTrainerService personalTrainerService;
 
     @Autowired
-    private com.Code.Service.Auth.AccountService AccountService;
+    private AccountService AccountService;
 
     @Autowired
-    private com.Code.Service.Gym.gymService gymService;
+    private gymService gymService;
 
     @Autowired
-    private JavaMailSender javaMailSender;
+    private tokenService tokenService;
 
-    @Autowired
-    private com.Code.Service.Auth.tokenService tokenService;
+    public MailSender mailSender;
 
-    public void sendEmail(String toEmail,
-            String subject,
-            String body) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom("ngaitrong0108@gmail.com");
-        mailMessage.setTo(toEmail);
-        mailMessage.setSubject(subject);
-        mailMessage.setText(body);
-        javaMailSender.send(mailMessage);
-    }
-
-    @RequestMapping("/save")
-    public String save(
-            @RequestParam("username") String username,
-            @RequestParam("password") String password,
-            @RequestParam("name") String name,
-            @RequestParam("address") String address,
-            @RequestParam("email") String email,
-            @RequestParam("phone") String phone,
-            @RequestParam("gym") int gymID,
-            @RequestParam("price") int price) {
+    @PostMapping("/signIn")
+    public String signIn(@RequestBody ptSignUpRequest ptSignUpRequest) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         Account account = new Account(
-                username,
-                bCryptPasswordEncoder.encode(password),
-                email,
-                phone,
+                ptSignUpRequest.getUsername(),
+                bCryptPasswordEncoder.encode(ptSignUpRequest.getPassword()),
+                ptSignUpRequest.getEmail(),
+                ptSignUpRequest.getPhone(),
                 false,
                 role.PERSONAL_TRAINER,
                 typeAccount.NORMAL);
         AccountService.save(account);
-        personalTrainer personal_trainer = new personalTrainer();
-        personal_trainer.setAccount(account);
-        personal_trainer.setAddress(address);
-        personal_trainer.setName(name);
-        personal_trainer.setGym(gymService.findGymById(gymID));
-        personal_trainer.setPrice(price);
-        personalTrainerService.save(personal_trainer);
+        personalTrainer personalTrainer = new personalTrainer(
+                ptSignUpRequest.getName(),
+                ptSignUpRequest.getAddress(),
+                "",
+                ptSignUpRequest.getPrice(),
+                account,
+                gymService.findGymById(ptSignUpRequest.getGymID())
+        );
+        personalTrainerService.save(personalTrainer);
         return "Successful";
     }
 
@@ -89,15 +71,16 @@ public class personalTrainerSignInController {
         return "Successful";
     }
 
-    @RequestMapping("/sendToken")
+    @PostMapping("/sendToken")
     public void sendToken(@RequestParam("username") String username) {
         Account account = AccountService.findByUsername(username);
+        mailSender = new MailSender();
         token token = new token();
         token.genNewToken();
         token.setTokenType(tokenType.REPASSWORD);
         token.setAccount(account);
         tokenService.save(token);
-        sendEmail(account.getEmail(), "Token", token.getToken());
+        mailSender.sendEmail(account.getEmail(), "Token", token.getToken());
     }
 
     @RequestMapping("/confirmToken")

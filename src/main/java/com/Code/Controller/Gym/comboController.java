@@ -1,6 +1,7 @@
 package com.Code.Controller.Gym;
 
 import com.Code.Entity.Gym.combo;
+import com.Code.Service.Gym.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,10 +9,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/combo")
 public class comboController {
     @Autowired
-    private com.Code.Service.Gym.comboService comboService;
+    private comboService comboService;
 
     @Autowired
-    private com.Code.Service.Gym.gymService gymService;
+    private gymService gymService;
 
     @PostMapping("addCombo")
     public String addCombo(

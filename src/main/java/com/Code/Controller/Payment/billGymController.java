@@ -5,7 +5,8 @@ import com.Code.Entity.Gym.combo;
 import com.Code.Entity.Gym.gym;
 import com.Code.Entity.Payment.billGym;
 import com.Code.Entity.User.user;
-import com.Code.Model.billGymResponse;
+import com.Code.Model.Response.billGymResponse;
+import com.Code.Service.Gym.comboService;
 import com.Code.Service.Gym.gymService;
 import com.Code.Service.Payment.billGymService;
 import com.Code.Service.User.userService;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/bill_gym")
+@RequestMapping("/billGym")
 public class billGymController {
     @Autowired
     private billGymService bill_gymService;
@@ -29,9 +30,9 @@ public class billGymController {
     private gymService gymService;
 
     @Autowired
-    private com.Code.Service.Gym.comboService comboService;
+    private comboService comboService;
 
-    @RequestMapping("checkout")
+    @RequestMapping("/checkout")
     public Boolean checkout(
             @RequestParam("idUser") int idUser,
             @RequestParam("idGym") int idGym,
@@ -53,7 +54,7 @@ public class billGymController {
         return true;
     }
 
-    @RequestMapping("checkGymExit")
+    @RequestMapping("/checkGymExit")
     public billGymResponse checkGymExit(@RequestParam("idUser") int idUser) {
         billGymResponse billGymResponse = new billGymResponse();
         billGym bill = bill_gymService.getByUser(idUser);

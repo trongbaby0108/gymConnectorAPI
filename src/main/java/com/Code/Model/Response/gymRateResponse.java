@@ -4,14 +4,14 @@ import com.Code.Entity.Gym.gymRate;
 import lombok.Data;
 
 @Data
-public class gymRateRespone {
+public class gymRateResponse {
     private int id ;
     private String content ;
     private float vote ;
     private String name ;
     private String avatar;
 
-    public gymRateRespone(gymRate judge_gym) {
+    public gymRateResponse(gymRate judge_gym) {
         this.id = judge_gym.getId();
         this.content = judge_gym.getContent();
         this.vote = judge_gym.getVote();

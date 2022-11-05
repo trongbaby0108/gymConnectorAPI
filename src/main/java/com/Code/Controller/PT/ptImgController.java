@@ -22,18 +22,18 @@ public class ptImgController {
     private picPTService picPTService;
 
     @Autowired
-    private personalTrainerService personal_trainerService;
+    private personalTrainerService personalTrainerService;
 
     @PostMapping("/save")
     public String save(
             @RequestParam("id") int id,
-            @RequestParam("pic")MultipartFile pic
+            @RequestParam("pic") MultipartFile pic
     ){
         Uploader uploader = new Uploader();
-        picPT pic_pt = new picPT();
-        pic_pt.setPersonal_trainer(personal_trainerService.findById(id));
-        pic_pt.setImg(uploader.uploadFile(pic));
-        picPTService.save(pic_pt);
+        picPT picPT = new picPT();
+        picPT.setPersonal_trainer(personalTrainerService.findById(id));
+        picPT.setImg(uploader.uploadFile(pic));
+        picPTService.save(picPT);
         return "Successful";
     }
 

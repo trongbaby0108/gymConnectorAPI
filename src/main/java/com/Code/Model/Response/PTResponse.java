@@ -1,7 +1,6 @@
 package com.Code.Model.Response;
 
 import com.Code.Entity.PT.personalTrainer;
-import com.Code.Model.gymModel;
 import lombok.Data;
 
 @Data
@@ -18,7 +17,7 @@ public class PTResponse {
     private float rate = 5;
     private boolean enable;
 
-    private gymModel gym;
+    private gymResponse gym;
 
     public PTResponse(personalTrainer pt) {
         this.id = pt.getId();
@@ -31,6 +30,6 @@ public class PTResponse {
         this.fee = pt.getPrice();
         this.Role = pt.getAccount().getRole().getText();
         this.enable = pt.getAccount().isEnable();
-        this.gym = new gymModel(pt.getGym());
+        this.gym = new gymResponse(pt.getGym());
     }
 }

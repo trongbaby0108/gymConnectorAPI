@@ -2,7 +2,7 @@ package com.Code.Controller.PT;
 
 import com.Code.Entity.PT.personalTrainer;
 import com.Code.Entity.PT.ptRate;
-import com.Code.Model.PTResponseModel;
+import com.Code.Model.Response.PTResponse;
 import com.Code.Service.PT.judgePtService;
 import com.Code.Service.PT.personalTrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/personal_trainerAdmin")
+@RequestMapping("/personalTrainerAdmin")
 public class personalTrainerAdminController {
     @Autowired
     private personalTrainerService personal_trainerService;
@@ -23,11 +23,11 @@ public class personalTrainerAdminController {
     private judgePtService judge_ptService;
 
     @RequestMapping("/getALlPT")
-    public List<PTResponseModel> getALlPT(){
-        List<PTResponseModel> res = new ArrayList<>();
+    public List<PTResponse> getALlPT(){
+        List<PTResponse> res = new ArrayList<>();
         for (personalTrainer pt : personal_trainerService.getAll()) {
             if (Objects.equals(pt.getAccount().getRole().getText(), "PERSONAL_TRAINER")){
-                PTResponseModel ptResponseModel = new PTResponseModel(pt);
+                PTResponse ptResponseModel = new PTResponse(pt);
                 ptResponseModel.setRate(getPTRate(ptResponseModel.getId()));
                 res.add(ptResponseModel);
             }

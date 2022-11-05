@@ -13,11 +13,11 @@ import java.util.List;
 @RequestMapping("/gym")
 public class gymController {
     @Autowired
-    private gymService _gymService;
+    private gymService gymService;
 
     @GetMapping("/getAll")
     public List<gym> getAll(){
-        return _gymService.getAll();
+        return gymService.getAll();
     }
 
     @PostMapping("/addGym")
@@ -27,13 +27,11 @@ public class gymController {
                            @RequestParam("name") String name ,
                            @RequestParam("phone") String phone ){
         gym gym = new gym();
-
         gym.setAddress(address);
         gym.setEmail(email);
         gym.setName(name);
         gym.setPhone(phone);
-
-        _gymService.signNewGym(gym);
+        gymService.signNewGym(gym);
         return "OK";
     }
 
@@ -44,13 +42,13 @@ public class gymController {
             @RequestParam("address") String address ,
             @RequestParam("name") String name ,
             @RequestParam("phone") String phone ){
-        gym gym = _gymService.findGymById(id);
+        gym gym = gymService.findGymById(id);
         gym.setAddress(address);
         gym.setEmail(email);
         gym.setName(name);
         gym.setPhone(phone);
 
-        _gymService.signNewGym(gym);
+        gymService.signNewGym(gym);
         return "OK";
     }
 
@@ -60,10 +58,10 @@ public class gymController {
             @RequestParam("name") String name
     ){
         Uploader uploader = new Uploader();
-        gym gym = _gymService.findGymByName(name);
+        gym gym = gymService.findGymByName(name);
         if(gym != null){
             gym.setAvatar(uploader.uploadFile(img));
-            _gymService.signNewGym(gym);
+            gymService.signNewGym(gym);
             return "OK";
         }
         else return "Fail";

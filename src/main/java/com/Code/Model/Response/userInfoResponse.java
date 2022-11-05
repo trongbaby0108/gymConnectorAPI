@@ -1,4 +1,4 @@
-package com.Code.Model;
+package com.Code.Model.Response;
 
 import com.Code.Entity.User.user;
 import lombok.Data;

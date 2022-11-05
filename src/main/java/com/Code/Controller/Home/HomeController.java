@@ -4,19 +4,20 @@ import com.Code.Entity.Gym.combo;
 import com.Code.Entity.Gym.gymRate;
 import com.Code.Entity.PT.personalTrainer;
 import com.Code.Entity.PT.ptRate;
-import com.Code.Model.PTResponseModel;
-import com.Code.Model.gymModel;
-import com.Code.Model.judge_PTModel;
-import com.Code.Model.judge_gymModel;
+import com.Code.Model.Request.commentPtRequest;
+import com.Code.Model.Response.PTResponse;
+import com.Code.Model.Response.gymRateResponse;
+import com.Code.Model.Response.gymResponse;
+import com.Code.Model.Response.ptRateResponse;
+import com.Code.Service.Auth.AccountService;
+import com.Code.Service.Gym.comboService;
 import com.Code.Service.Gym.gymService;
 import com.Code.Service.Gym.judgeGymService;
 import com.Code.Service.PT.judgePtService;
 import com.Code.Service.PT.personalTrainerService;
+import com.Code.Service.User.userService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,26 +29,29 @@ public class HomeController {
     private gymService _gymService;
 
     @Autowired
+    private AccountService accountService;
+
+    @Autowired
     private personalTrainerService personal_trainerService;
 
     @Autowired
-    private com.Code.Service.Gym.comboService comboService;
+    private comboService comboService;
 
     @Autowired
     private judgeGymService judge_gymService;
 
     @Autowired
-    private com.Code.Service.User.userService userService;
+    private userService userService;
 
     @Autowired
     private judgePtService judge_ptService;
 
     @RequestMapping("/getPT")
-    public List<PTResponseModel> getPT() {
-        List<PTResponseModel> ptModels = new ArrayList<>();
+    public List<PTResponse> getPT() {
+        List<PTResponse> ptModels = new ArrayList<>();
         for (personalTrainer pt : personal_trainerService.getAll()) {
             if (pt.getAccount().isEnable()) {
-                PTResponseModel ptModel = new PTResponseModel(pt);
+                PTResponse ptModel = new PTResponse(pt);
                 ptModel.setRate(getPTRate(ptModel.getId()));
                 ptModels.add(ptModel);
             }
@@ -56,10 +60,10 @@ public class HomeController {
     }
 
     @GetMapping("/getGym")
-    public List<gymModel> getGym() {
-        List<gymModel> res = new ArrayList<>();
+    public List<gymResponse> getGym() {
+        List<gymResponse> res = new ArrayList<>();
         _gymService.getAll().forEach(gym -> {
-            gymModel gymModel = new gymModel(gym);
+            gymResponse gymModel = new gymResponse(gym);
             gymModel.setRate(getGymRate(gym.getId()));
             res.add(gymModel);
         });
@@ -86,12 +90,12 @@ public class HomeController {
         return comboService.getByGym(id);
     }
 
-    @RequestMapping("/getPTByGym")
-    public List<PTResponseModel> getPTByGym(@RequestParam int id) {
-        List<PTResponseModel> ptModels = new ArrayList<>();
+    @RequestMapping("/getPTByGym/gym={id}")
+    public List<PTResponse> getPTByGym(@PathVariable int id) {
+        List<PTResponse> ptModels = new ArrayList<>();
         for (personalTrainer pt : personal_trainerService.getPTByGym(id)) {
             if (pt.getAccount().isEnable()) {
-                PTResponseModel ptModel = new PTResponseModel(pt);
+                PTResponse ptModel = new PTResponse(pt);
                 ptModel.setRate(getPTRate(pt.getId()));
                 ptModels.add(ptModel);
             }
@@ -110,10 +114,10 @@ public class HomeController {
     }
 
     @GetMapping("/getJudgeByGym")
-    public List<judge_gymModel> getJudgeByGym(@RequestParam int id) {
-        List<judge_gymModel> res = new ArrayList<>();
+    public List<gymRateResponse> getJudgeByGym(@RequestParam int id) {
+        List<gymRateResponse> res = new ArrayList<>();
         for (gymRate gymRate : judge_gymService.getByGym(id)) {
-            judge_gymModel judge_gymModel = new judge_gymModel(gymRate);
+            gymRateResponse judge_gymModel = new gymRateResponse(gymRate);
             res.add(judge_gymModel);
         }
         return res;
@@ -131,24 +135,32 @@ public class HomeController {
     }
 
 
-    @GetMapping("/getJudgeByPT")
-    public List<judge_PTModel> getJudgeByPT(@RequestParam int id) {
-        List<judge_PTModel> res = new ArrayList<>();
+    @GetMapping("/getRateByPT")
+    public List<ptRateResponse> getRateByPT(@RequestParam int id) {
+        List<ptRateResponse> res = new ArrayList<>();
         for (ptRate judge_pt : judge_ptService.getByPT(id)) {
-            judge_PTModel judge_PTModel = new judge_PTModel(judge_pt);
-            res.add(judge_PTModel);
+            ptRateResponse ratePtResponse = new ptRateResponse(judge_pt);
+            res.add(ratePtResponse);
         }
         return res;
     }
 
-    @GetMapping("/addCommentPT")
-    public String addCommentPT(@RequestParam String content, @RequestParam float vote, @RequestParam int ptID, @RequestParam int userId) {
+    @PostMapping("/addCommentPT")
+    public String addCommentPT(@RequestBody commentPtRequest commentPtRequest) {
         ptRate ptRate = new ptRate();
-        ptRate.setComment(content);
-        ptRate.setVote(vote);
-        ptRate.setPersonalTrainer(personal_trainerService.findById(ptID));
-        ptRate.setUser(userService.findById(userId));
+        ptRate.setComment(commentPtRequest.getContent());
+        ptRate.setVote(commentPtRequest.getVote());
+        ptRate.setPersonalTrainer(personal_trainerService.findById(commentPtRequest.getPtId()));
+        ptRate.setUser(userService.findById(commentPtRequest.getUserId()));
         judge_ptService.save(ptRate);
         return "successful";
     }
+
+//    @GetMapping("/createAdmin")
+//    public String createAdmin(){
+//        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+//        Account account = new Account("admin",bCryptPasswordEncoder.encode("1234"),"admin@gmail.com","12341234",true, role.ADMIN, typeAccount.NORMAL);
+//        accountService.save(account);
+//        return "successful";
+//    }
 }

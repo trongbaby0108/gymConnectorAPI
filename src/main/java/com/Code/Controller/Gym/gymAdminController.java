@@ -1,5 +1,9 @@
 package com.Code.Controller.Gym;
 
+import com.Code.Entity.Gym.combo;
+import com.Code.Entity.Gym.gym;
+import com.Code.Service.Gym.comboService;
+import com.Code.Service.Gym.gymService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,14 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/gymAdmin")
 public class gymAdminController {
     @Autowired
-    private com.Code.Service.Gym.gymService gymService ;
+    private gymService gymService ;
 
     @Autowired
-    private com.Code.Service.Gym.comboService comboService;
+    private comboService comboService;
 
     @RequestMapping("/enableAllGym")
     public String enableAllGym(){
-        for (com.Code.Entity.Gym.gym gym:gymService.getAll()) {
+        for (gym gym:gymService.getAll()) {
             gym.setEnable(true);
             gymService.signNewGym(gym);
         }
@@ -24,7 +28,7 @@ public class gymAdminController {
 
     @RequestMapping("/enableAllCombo")
     public String enableAllCombo(){
-        for (com.Code.Entity.Gym.combo combo:comboService.getAll()) {
+        for (combo combo:comboService.getAll()) {
             combo.setEnable(true);
             comboService.save(combo);
         }

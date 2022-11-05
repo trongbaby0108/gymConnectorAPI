@@ -3,13 +3,14 @@ package com.Code.Controller.Auth;
 import com.Code.Entity.Auth.Account;
 import com.Code.Entity.PT.personalTrainer;
 import com.Code.Entity.User.user;
-import com.Code.Model.PTResponseModel;
-import com.Code.Model.jwtDecodeModel;
-import com.Code.Model.jwtRequest;
-import com.Code.Model.userInfoResponse;
+import com.Code.Model.Authentication.jwtDecodeModel;
+import com.Code.Model.Authentication.jwtRequest;
+import com.Code.Model.Response.PTResponse;
+import com.Code.Model.Response.userInfoResponse;
 import com.Code.Service.Auth.AccountService;
 import com.Code.Security.JwtTokenUtil;
 import com.Code.Service.PT.personalTrainerService;
+import com.Code.Service.User.userService;
 import com.google.gson.Gson;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +36,10 @@ public class loginController {
     private AccountService accountService;
 
     @Autowired
-    private com.Code.Service.User.userService userService;
+    private userService userService;
 
     @Autowired
-    private personalTrainerService personal_trainerService;
+    private personalTrainerService personaTrainerService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -47,41 +48,33 @@ public class loginController {
     public String createToken(@RequestBody jwtRequest jwtRequest) throws Exception {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            jwtRequest.getUsername(),
-                            jwtRequest.getPassword()
-                    )
+                    new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(),jwtRequest.getPassword())
             );
         } catch (BadCredentialsException e) {
             throw new Exception("Incorect....", e);
         }
-        final UserDetails userDetails = userDetailService.loadUserByUsername(
-                jwtRequest.getUsername()
-        );
+        final UserDetails userDetails = userDetailService.loadUserByUsername(jwtRequest.getUsername());
         return jwtTokenUtil.generateToken(userDetails);
     }
 
 
     @GetMapping(value = "/getUserInfo")
     public userInfoResponse getUserInfo(@RequestParam("jwt") String jwt) {
-        //Properties prop = new Properties();
-        String[] pieces = jwt.split("\\.");
-        String b64payload = pieces[1];
-        String jsonString = null;
-        try {
-            jsonString = new String(Base64.decodeBase64(b64payload), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-        jwtDecodeModel jwtDecodeModel = new Gson().fromJson(jsonString, jwtDecodeModel.class);
+        jwtDecodeModel jwtDecodeModel = extractModel(jwt);
         Account accountResult = accountService.findByUsername(jwtDecodeModel.sub);
         user user = userService.findByUserName(accountResult.getUsername());
         return new userInfoResponse(user);
     }
 
     @GetMapping(value = "/getPTInfo")
-    public PTResponseModel getPTInfo(@RequestParam("jwt") String jwt) {
-        //Properties prop = new Properties();
+    public PTResponse getPTInfo(@RequestParam("jwt") String jwt) {
+        jwtDecodeModel jwtDecodeModel = extractModel(jwt);
+        Account accountResult = accountService.findByUsername(jwtDecodeModel.sub);
+        personalTrainer pt = personaTrainerService.findByUsername(accountResult.getUsername());
+        return new PTResponse(pt);
+    }
+
+    public jwtDecodeModel extractModel(String jwt){
         String[] pieces = jwt.split("\\.");
         String b64payload = pieces[1];
         String jsonString = null;
@@ -90,11 +83,7 @@ public class loginController {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
-        jwtDecodeModel jwtDecodeModel = new Gson().fromJson(jsonString, jwtDecodeModel.class);
-        Account accountResult = accountService.findByUsername(jwtDecodeModel.sub);
-        personalTrainer pt = personal_trainerService.findByUsername(accountResult.getUsername());
-
-        return new PTResponseModel(pt);
+        return new Gson().fromJson(jsonString, jwtDecodeModel.class);
     }
 }
 

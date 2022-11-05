@@ -2,6 +2,7 @@ package com.Code.Controller.Gym;
 
 
 import com.Code.Entity.Gym.discount;
+import com.Code.Service.Gym.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +12,7 @@ import java.util.List;
 @RequestMapping("/discount")
 public class discountController {
     @Autowired
-    private com.Code.Service.Gym.discountService discountService ;
+    private discountService discountService ;
     @GetMapping("/getAll")
     private List<discount> getAll(){
         return discountService.getAll();

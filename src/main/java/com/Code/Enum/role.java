@@ -1,6 +1,5 @@
 package com.Code.Enum;
 
-
 public enum role {
     USER("USER"),
     PERSONAL_TRAINER("PERSONAL_TRAINER"),
@@ -20,4 +19,3 @@ public enum role {
         this.text = text;
     }
 }
-

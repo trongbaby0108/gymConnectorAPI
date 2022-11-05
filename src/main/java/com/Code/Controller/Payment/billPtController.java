@@ -3,7 +3,7 @@ package com.Code.Controller.Payment;
 import com.Code.Entity.PT.personalTrainer;
 import com.Code.Entity.Payment.billPt;
 import com.Code.Entity.User.user;
-import com.Code.Model.billPTResponse;
+import com.Code.Model.Response.billPTResponse;
 import com.Code.Service.PT.personalTrainerService;
 import com.Code.Service.Payment.billPtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/bill_pt")
+@RequestMapping("/billPt")
 public class billPtController {
     @Autowired
     private billPtService bill_ptService;

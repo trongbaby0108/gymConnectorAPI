@@ -3,7 +3,7 @@ package com.Code.Model.Request;
 import lombok.Data;
 
 @Data
-public class signInRequest {
+public class ptSignUpRequest {
     private String username;
     private String password;
     private String name;

@@ -1,8 +1,9 @@
 package com.Code.Controller.PT;
 
 import com.Code.Entity.PT.picPT;
+import com.Code.Model.Response.ptImgResponse;
+import com.Code.Service.PT.picPTService;
 import com.Code.Util.Uploader;
-import com.Code.Model.ptIMGModel;
 import com.Code.Service.PT.personalTrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,9 +17,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/picPT")
-public class picPTController {
+public class ptImgController {
     @Autowired
-    private com.Code.Service.PT.picPTService picPTService;
+    private picPTService picPTService;
 
     @Autowired
     private personalTrainerService personal_trainerService;
@@ -37,12 +38,12 @@ public class picPTController {
     }
 
     @RequestMapping("/getByPt")
-    public List<ptIMGModel> getByPt(
+    public List<ptImgResponse> getByPt(
             @RequestParam("id") int id
     ){
-        List<ptIMGModel> res = new ArrayList<>();
+        List<ptImgResponse> res = new ArrayList<>();
         for (picPT pic_pt: picPTService.getByPT(id)) {
-            ptIMGModel ptIMGModel = new ptIMGModel(pic_pt);
+            ptImgResponse ptIMGModel = new ptImgResponse(pic_pt);
             res.add(ptIMGModel);
         }
         return res;

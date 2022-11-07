@@ -4,7 +4,7 @@ import com.Code.Entity.PT.ptRate;
 
 import java.util.List;
 
-public interface judgePtService {
+public interface ratePtService {
     public List<ptRate> getByPT(int id);
     public void save(ptRate judge_pt);
 }

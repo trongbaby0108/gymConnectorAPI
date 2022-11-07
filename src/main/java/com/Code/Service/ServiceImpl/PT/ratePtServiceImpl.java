@@ -1,8 +1,8 @@
 package com.Code.Service.ServiceImpl.PT;
 
 import com.Code.Entity.PT.ptRate;
-import com.Code.Service.PT.judgePtService;
 import com.Code.Repository.PT.judge_ptRepository;
+import com.Code.Service.PT.ratePtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class judgePtServiceImpl implements judgePtService {
+public class ratePtServiceImpl implements ratePtService {
     @Autowired
     private judge_ptRepository judge_ptRepository;
     @Override

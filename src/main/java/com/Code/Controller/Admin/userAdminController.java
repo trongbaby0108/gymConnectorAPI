@@ -1,14 +1,18 @@
-package com.Code.Controller.User;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.Code.Controller.Admin;
 
 import com.Code.Entity.User.user;
+import com.Code.Enum.role;
+import com.Code.Exception.NotFoundException;
 import com.Code.Model.Response.userInfoResponse;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/userAdmin")
@@ -19,28 +23,32 @@ public class userAdminController {
     @RequestMapping("/getUser")
     public List<userInfoResponse> getUser(){
         List<userInfoResponse> res = new ArrayList<>();
-        for (com.Code.Entity.User.user user : userService.getAll()) {
-            if (user.getAccount().getRole().getText() == "USER"){
+        userService.getAll().forEach(user -> {
+            if (user.getAccount().getRole() == role.USER){
                 userInfoResponse userInfoResponse = new userInfoResponse(user);
                 res.add(userInfoResponse);
             }
-        }
+        });
         return res ;
     }
 
+    @SneakyThrows
     @RequestMapping("/disableUser")
-    public String disableUser(@RequestParam("idUser") int idUser){
+    public HttpStatus disableUser(@RequestParam("idUser") int idUser){
         user user = userService.findById(idUser);
+        if(user == null) throw new NotFoundException("user not found");
         user.getAccount().setEnable(false);
         userService.save(user);
-        return "Successful";
+        return HttpStatus.OK;
     }
 
+    @SneakyThrows
     @RequestMapping("/enableUser")
-    public String enableUser(@RequestParam("idUser") int idUser){
+    public HttpStatus enableUser(@RequestParam("idUser") int idUser){
         user user = userService.findById(idUser);
+        if(user == null) throw new NotFoundException("user not found");
         user.getAccount().setEnable(true);
         userService.save(user);
-        return "Successful";
+        return HttpStatus.OK;
     }
 }

@@ -2,14 +2,15 @@ package com.Code.Entity.Payment;
 
 import com.Code.Entity.PT.personalTrainer;
 import com.Code.Entity.User.user;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -28,4 +29,9 @@ public class billPt {
     @ManyToOne
     @JoinColumn(name = "userId",nullable = false, referencedColumnName = "userId")
     private user user;
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

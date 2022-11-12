@@ -1,13 +1,14 @@
 package com.Code.Entity.User;
 
 import com.Code.Entity.Auth.Account;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-@Data
+import java.util.Objects;
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -18,10 +19,14 @@ public class user {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "userId")
     private int id ;
-    private String name ;
+    private String name;
     private String address;
     private String avatar;
     @OneToOne
-    @JoinColumn(name = "accountID", referencedColumnName = "accountId")
+    @JoinColumn(name = "accountId", referencedColumnName = "accountId")
     private Account account;
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

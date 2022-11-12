@@ -1,4 +1,4 @@
-package com.Code.Controller.Auth;
+package com.Code.Controller.Authentication;
 
 import com.Code.Entity.Auth.Account;
 import com.Code.Entity.Auth.token;
@@ -14,6 +14,7 @@ import com.Code.Service.PT.personalTrainerService;
 import com.Code.Util.MailSender;
 import com.Code.Util.Uploader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -84,17 +85,17 @@ public class personalTrainerSignInController {
     }
 
     @RequestMapping("/confirmToken")
-    public String confirmToken(@RequestParam("token") String tokenString,
-            @RequestParam("username") String username) {
+    public HttpStatus confirmToken(@RequestParam("token") String tokenString,
+                                   @RequestParam("username") String username) {
         token token = tokenService.findByToken(tokenString);
         if (token.getAccount().getUsername().equals(username) &&
                 token.getExpiryAt().isAfter(LocalDateTime.now())) {
             Account acc = token.getAccount();
             acc.setEnable(true);
             AccountService.save(acc);
-            return "Successfully";
+            return HttpStatus.OK;
         } else
-            return "Failed";
+            return HttpStatus.BAD_REQUEST;
     }
 
     @RequestMapping("/forgetPassword")
@@ -107,7 +108,7 @@ public class personalTrainerSignInController {
     }
 
     @RequestMapping("/changePassword")
-    public void changePassword(
+    public HttpStatus changePassword(
             @RequestParam("username") String username,
             @RequestParam("password") String password,
             @RequestParam("newPassword") String newPassword) throws Exception {
@@ -116,7 +117,8 @@ public class personalTrainerSignInController {
         if (bCryptPasswordEncoder.matches(password, account.getPassword())) {
             account.setPassword(bCryptPasswordEncoder.encode(newPassword));
             AccountService.save(account);
+            return HttpStatus.OK;
         } else
-            throw new Exception("Password not Match");
+            return HttpStatus.BAD_REQUEST;
     }
 }

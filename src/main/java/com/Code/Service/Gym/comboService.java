@@ -1,9 +1,9 @@
 package com.Code.Service.Gym;
 
 
-import java.util.List;
-
 import com.Code.Entity.Gym.combo;
+
+import java.util.List;
 
 public interface comboService{
     public List<combo> getAll();

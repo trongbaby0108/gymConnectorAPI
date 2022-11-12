@@ -2,15 +2,15 @@ package com.Code.Entity.Payment;
 import com.Code.Entity.Gym.combo;
 import com.Code.Entity.Gym.gym;
 import com.Code.Entity.User.user;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class billGym {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name= "billGymID")
+    @Column(name= "billGymId")
     private int id ;
     private LocalDateTime dayStart ;
     private LocalDateTime dayEnd ;

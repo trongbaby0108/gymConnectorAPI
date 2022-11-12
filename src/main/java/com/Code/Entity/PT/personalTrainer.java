@@ -2,12 +2,14 @@ package com.Code.Entity.PT;
 
 import com.Code.Entity.Auth.Account;
 import com.Code.Entity.Gym.gym;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-@Data
+import java.util.Objects;
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -22,11 +24,11 @@ public class personalTrainer {
     private String avatar;
     private int price;
     @OneToOne
-    @JoinColumn(name = "accountID", referencedColumnName = "accountId")
+    @JoinColumn(name = "accountId", referencedColumnName = "accountId")
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "gymID", referencedColumnName = "gymId")
+    @JoinColumn(name = "gymId", referencedColumnName = "gymId")
     private gym gym;
 
     public personalTrainer(String name, String address, String avatar, int price, Account account, gym gym) {

@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface ratePtService {
     public List<ptRate> getByPT(int id);
-    public void save(ptRate judge_pt);
+    public void save(ptRate ptRate);
+
+    public float getPtRate(int id);
 }

@@ -1,8 +1,8 @@
 package com.Code.Service.ServiceImpl.User;
 
 import com.Code.Entity.User.user;
-import com.Code.Service.User.userService;
 import com.Code.Repository.User.userRepository;
+import com.Code.Service.User.userService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.Code.Controller.Auth;
+package com.Code.Controller.Authentication;
 
 import com.Code.Entity.Auth.Account;
 import com.Code.Entity.Auth.token;
@@ -6,21 +6,23 @@ import com.Code.Entity.User.user;
 import com.Code.Enum.role;
 import com.Code.Enum.tokenType;
 import com.Code.Enum.typeAccount;
+import com.Code.Exception.NotFoundException;
 import com.Code.Model.Request.changePasswordRequest;
+import com.Code.Model.Request.forgetPasswordRequest;
 import com.Code.Model.Request.userSignUpRequest;
 import com.Code.Model.Response.userInfoResponse;
 import com.Code.Service.Auth.AccountService;
 import com.Code.Service.Auth.tokenService;
 import com.Code.Service.User.userService;
 import com.Code.Util.Uploader;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/signUser")
@@ -48,9 +50,11 @@ public class userSignInController {
         javaMailSender.send(mailMessage);
     }
 
+    @SneakyThrows
     @PostMapping("/save")
-    public String save(@RequestBody userSignUpRequest userSignUpRequest) {
+    public HttpStatus save(@RequestBody userSignUpRequest userSignUpRequest) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        if(userService.findByUserName(userSignUpRequest.getName()) != null) throw new NotFoundException("Already have username");
         Account account = new Account(
                 userSignUpRequest.getUsername(),
                 bCryptPasswordEncoder.encode(userSignUpRequest.getPassword()),
@@ -65,21 +69,21 @@ public class userSignInController {
         user.setAddress(userSignUpRequest.getAddress());
         user.setName(userSignUpRequest.getName());
         userService.save(user);
-        return "Successful";
+        return HttpStatus.OK;
     }
 
     @PostMapping("/uploadAvatar")
-    private String uploadAvatar(@RequestParam("username") String username,
+    private HttpStatus uploadAvatar(@RequestParam("username") String username,
             @RequestParam("avatar") MultipartFile avatar) {
         user user = userService.findByUserName(username);
         Uploader uploader = new Uploader();
         user.setAvatar(uploader.uploadFile(avatar));
         userService.save(user);
-        return "Successful";
+        return HttpStatus.OK;
     }
 
     @RequestMapping("/sendToken")
-    public String sendToken(@RequestParam("username") String username) {
+    public HttpStatus sendToken(@RequestParam("username") String username) {
         Account account = AccountService.findByUsername(username);
         token token = new token();
         token.genNewToken();
@@ -87,34 +91,45 @@ public class userSignInController {
         token.setAccount(account);
         tokenService.save(token);
         sendEmail(account.getEmail(), "Token", token.getToken());
-        return "Succesfull";
+        return HttpStatus.OK;
     }
 
     @RequestMapping("/confirmToken")
-    public String confirmToken(@RequestParam("token") String tokenString, @RequestParam("username") String username) {
+    public HttpStatus confirmToken(@RequestParam("token") String tokenString, @RequestParam("username") String username) {
         if(tokenService.confirmToken(username,tokenString))
-            return "Successfully";
+            return HttpStatus.OK;
         else
-            return "Failed";
+            return HttpStatus.BAD_REQUEST;
     }
 
-    @RequestMapping("/forgetPassword")
-    public void forgetPassword(
-            @RequestParam("username") String username,
-            @RequestParam("newPassword") String newPassword) {
-        Account account = AccountService.findByUsername(username);
+    @SneakyThrows
+    @PostMapping("/forgetPassword")
+    public void forgetPassword(@RequestBody forgetPasswordRequest forgetPasswordRequest) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        account.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        Account account = AccountService.findByUsername(forgetPasswordRequest.getUsername());
+        if(account == null)
+            throw new NotFoundException("account not found");
+        else if(account.isEnable())
+            throw new NotFoundException("account is disable");
+        else if (bCryptPasswordEncoder.matches(forgetPasswordRequest.getOldPassword(), account.getPassword()))
+            throw new NotFoundException("password not match");
+        else
+            account.setPassword(bCryptPasswordEncoder.encode(forgetPasswordRequest.getNewPassword()));
     }
 
+    @SneakyThrows
     @PostMapping("/changePassword")
-    public void changePassword(@RequestBody changePasswordRequest changePasswordRequest) throws Exception {
-        Account account = AccountService.findByUsername(changePasswordRequest.getUsername());
+    public void changePassword(@RequestBody changePasswordRequest changePasswordRequest) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        if (bCryptPasswordEncoder.encode(changePasswordRequest.getPassword()).equals(account.getPassword()))
-            account.setPassword(bCryptPasswordEncoder.encode(changePasswordRequest.getPassword()));
+        Account account = AccountService.findByUsername(changePasswordRequest.getUsername());
+        if(account == null)
+            throw new NotFoundException("account not found");
+        else if(account.isEnable())
+            throw new NotFoundException("account is disable");
+        else if (bCryptPasswordEncoder.matches(changePasswordRequest.getPassword(), account.getPassword()))
+            throw new NotFoundException("password not match");
         else
-            throw new Exception("Password not Match");
+            account.setPassword(bCryptPasswordEncoder.encode(changePasswordRequest.getNewPassword()));
     }
 
     @RequestMapping("/createGoogleUser")

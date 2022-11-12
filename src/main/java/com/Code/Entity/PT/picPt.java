@@ -1,4 +1,4 @@
-package com.Code.Entity.Gym;
+package com.Code.Entity.PT;
 
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -12,16 +12,15 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table
-public class picGym {
+public class picPt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name= "picGymId")
+    @Column(name= "picPtId")
     private int id;
     private String img ;
-
     @ManyToOne
-    @JoinColumn(name = "gymId",nullable = false, referencedColumnName = "gymId")
-    private gym gym;
+    @JoinColumn(name = "ptId",referencedColumnName = "ptId")
+    private personalTrainer personalTrainer;
 
     @Override
     public int hashCode() {

@@ -1,14 +1,13 @@
 package com.Code.Service.ServiceImpl.Gym;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.Code.Entity.Gym.discount;
+import com.Code.Repository.Gym.discountRepository;
 import com.Code.Service.Gym.discountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.Code.Repository.Gym.discountRepository;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class discountServiceImpl implements discountService {

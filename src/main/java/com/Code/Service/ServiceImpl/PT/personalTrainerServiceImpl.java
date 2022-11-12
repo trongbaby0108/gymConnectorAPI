@@ -1,8 +1,8 @@
 package com.Code.Service.ServiceImpl.PT;
 
 import com.Code.Entity.PT.personalTrainer;
-import com.Code.Service.PT.personalTrainerService;
 import com.Code.Repository.PT.personal_trainerRepository;
+import com.Code.Service.PT.personalTrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

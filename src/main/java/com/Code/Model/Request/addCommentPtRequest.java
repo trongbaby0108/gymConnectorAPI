@@ -3,7 +3,7 @@ package com.Code.Model.Request;
 import lombok.Data;
 
 @Data
-public class commentPtRequest {
+public class addCommentPtRequest {
     private String content;
     private float vote;
     private int ptId;

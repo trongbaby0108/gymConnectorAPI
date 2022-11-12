@@ -1,13 +1,14 @@
 package com.Code.Entity.Gym;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -26,5 +27,8 @@ public class discount {
     @JoinColumn(name = "gymId",nullable = false, referencedColumnName = "gymId")
     private gym gym;
 
-
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

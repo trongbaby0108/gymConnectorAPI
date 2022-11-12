@@ -1,4 +1,4 @@
-package com.Code.Controller.Payment;
+package com.Code.Controller.Client;
 
 import com.Code.Entity.PT.personalTrainer;
 import com.Code.Entity.Payment.billPt;

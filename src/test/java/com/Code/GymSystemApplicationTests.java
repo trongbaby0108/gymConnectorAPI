@@ -5,11 +5,11 @@ import com.Code.Service.Gym.gymService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Primary;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 class GymSystemApplicationTests {
@@ -20,7 +20,7 @@ class GymSystemApplicationTests {
 	@Test
 	void addNewGym(){
 		int before = gymService.getAll().size();
-		gymService.signNewGym(new gym("Test","Test","Test","Test","Test",true));
+		gymService.save(new gym("Test","Test","Test","Test","Test",true));
 		assertEquals(gymService.getAll().size(),before+1);
 	}
 

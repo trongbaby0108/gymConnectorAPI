@@ -1,10 +1,13 @@
-package com.Code.Controller.PT;
+package com.Code.Controller.Admin;
 
-import com.Code.Entity.PT.picPT;
+import com.Code.Entity.PT.personalTrainer;
+import com.Code.Entity.PT.picPt;
+import com.Code.Exception.NotFoundException;
 import com.Code.Model.Response.ptImgResponse;
+import com.Code.Service.PT.personalTrainerService;
 import com.Code.Service.PT.picPTService;
 import com.Code.Util.Uploader;
-import com.Code.Service.PT.personalTrainerService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,26 +27,24 @@ public class ptImgController {
     @Autowired
     private personalTrainerService personalTrainerService;
 
+    @SneakyThrows
     @PostMapping("/save")
-    public String save(
-            @RequestParam("id") int id,
-            @RequestParam("pic") MultipartFile pic
-    ){
+    public String save(@RequestParam("id") int id, @RequestParam("pic") MultipartFile pic){
+        personalTrainer pt = personalTrainerService.findById(id);
+        if(pt == null) throw new NotFoundException("Pt not found");
         Uploader uploader = new Uploader();
-        picPT picPT = new picPT();
-        picPT.setPersonal_trainer(personalTrainerService.findById(id));
-        picPT.setImg(uploader.uploadFile(pic));
-        picPTService.save(picPT);
+        picPt picPt = new picPt();
+        picPt.setPersonalTrainer(pt);
+        picPt.setImg(uploader.uploadFile(pic));
+        picPTService.save(picPt);
         return "Successful";
     }
 
     @RequestMapping("/getByPt")
-    public List<ptImgResponse> getByPt(
-            @RequestParam("id") int id
-    ){
+    public List<ptImgResponse> getByPt(@RequestParam("id") int id){
         List<ptImgResponse> res = new ArrayList<>();
-        for (picPT pic_pt: picPTService.getByPT(id)) {
-            ptImgResponse ptIMGModel = new ptImgResponse(pic_pt);
+        for (picPt picPt: picPTService.getByPT(id)) {
+            ptImgResponse ptIMGModel = new ptImgResponse(picPt);
             res.add(ptIMGModel);
         }
         return res;

@@ -1,8 +1,10 @@
 package com.Code.Service.ServiceImpl.PT;
 
-import com.Code.Entity.PT.picPT;
-import com.Code.Service.PT.picPTService;
+import com.Code.Entity.PT.picPt;
+import com.Code.Exception.NotFoundException;
 import com.Code.Repository.Gym.picPTRepository;
+import com.Code.Service.PT.picPTService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,18 +18,18 @@ public class picPTServiceImpl implements picPTService {
     private picPTRepository picPTRepository;
 
     @Override
-    public void save(picPT pic_pt) {
-        picPTRepository.save(pic_pt);
+    public void save(picPt picPt) {
+        picPTRepository.save(picPt);
     }
-
+    @SneakyThrows
     @Override
-    public List<picPT> getByPT(int pt) {
-        List<picPT> res = new ArrayList<>();
-        for (picPT pic_pt: picPTRepository.findAll()) {
-            if(pic_pt.getPersonal_trainer().getId() == pt){
-                res.add(pic_pt);
-            }
-        }
-        return res;
+    public List<picPt> getByPT(int id) {
+//        List<picPt> res = new ArrayList<>();
+//        for (picPt picPt: picPTRepository.findAll()) {
+//            if(picPt.getPersonalTrainer().getId() == pt){
+//                res.add(picPt);
+//            }
+//        }
+        return picPTRepository.getAllImgByPt(id).orElseThrow(()-> new NotFoundException("not found"));
     }
 }

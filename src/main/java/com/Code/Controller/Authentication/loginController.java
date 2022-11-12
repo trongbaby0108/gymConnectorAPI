@@ -1,4 +1,4 @@
-package com.Code.Controller.Auth;
+package com.Code.Controller.Authentication;
 
 import com.Code.Entity.Auth.Account;
 import com.Code.Entity.PT.personalTrainer;
@@ -7,11 +7,12 @@ import com.Code.Model.Authentication.jwtDecodeModel;
 import com.Code.Model.Authentication.jwtRequest;
 import com.Code.Model.Response.PTResponse;
 import com.Code.Model.Response.userInfoResponse;
-import com.Code.Service.Auth.AccountService;
 import com.Code.Security.JwtTokenUtil;
+import com.Code.Service.Auth.AccountService;
 import com.Code.Service.PT.personalTrainerService;
 import com.Code.Service.User.userService;
 import com.google.gson.Gson;
+import lombok.SneakyThrows;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,8 +45,9 @@ public class loginController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    @SneakyThrows
     @PostMapping(value = "/login")
-    public String createToken(@RequestBody jwtRequest jwtRequest) throws Exception {
+    public String createToken(@RequestBody jwtRequest jwtRequest) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(),jwtRequest.getPassword())

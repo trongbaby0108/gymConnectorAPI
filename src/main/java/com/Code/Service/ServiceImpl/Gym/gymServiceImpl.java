@@ -2,10 +2,9 @@ package com.Code.Service.ServiceImpl.Gym;
 
 import com.Code.Entity.Gym.gym;
 import com.Code.Exception.NotFoundException;
-import com.Code.Service.Gym.gymService;
 import com.Code.Repository.Gym.gymRepository;
+import com.Code.Service.Gym.gymService;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,19 +12,21 @@ import java.util.List;
 @Service
 public class gymServiceImpl implements gymService {
 
-    private gymRepository gymRepo;
+    private final gymRepository gymRepo;
 
     public gymServiceImpl(gymRepository gymRepo) {
         this.gymRepo = gymRepo;
     }
 
     @Override
+    @SneakyThrows
     public List<gym> getAll() {
         return gymRepo.findAll();
     }
 
     @Override
-    public void signNewGym(gym gym) {
+    @SneakyThrows
+    public void save(gym gym) {
         gymRepo.save(gym);
     }
 
@@ -36,7 +37,8 @@ public class gymServiceImpl implements gymService {
     }
 
     @Override
+    @SneakyThrows
     public gym findGymByName(String name) {
-        return gymRepo.findByName(name);
+        return gymRepo.findByName(name).orElseThrow(()-> new NotFoundException("not found this gym"));
     }
 }

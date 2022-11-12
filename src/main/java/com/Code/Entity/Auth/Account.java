@@ -2,14 +2,12 @@ package com.Code.Entity.Auth;
 
 import com.Code.Enum.role;
 import com.Code.Enum.typeAccount;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -29,8 +27,8 @@ public class Account {
     private typeAccount typeAccount;
     private role role;
 
-    public Account(String username, String password, String email, String phone, boolean enable, role role,
-            typeAccount typeAccount) {
+    public Account(String username, String password, String email,
+                   String phone, boolean enable, role role, typeAccount typeAccount) {
         this.username = username;
         this.password = password;
         this.email = email;

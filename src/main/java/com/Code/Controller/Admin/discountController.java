@@ -1,15 +1,15 @@
-package com.Code.Controller.Gym;
+package com.Code.Controller.Admin;
 
 
 import com.Code.Entity.Gym.discount;
-import com.Code.Service.Gym.*;
+import com.Code.Service.Gym.discountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/discount")
+@RequestMapping("/admin/discount")
 public class discountController {
     @Autowired
     private discountService discountService ;

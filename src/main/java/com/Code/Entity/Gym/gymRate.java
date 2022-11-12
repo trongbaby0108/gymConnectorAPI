@@ -1,11 +1,13 @@
 package com.Code.Entity.Gym;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-@Data
+import java.util.Objects;
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -24,4 +26,9 @@ public class gymRate {
     @ManyToOne
     @JoinColumn(name = "userId",nullable = false, referencedColumnName = "userId")
     private com.Code.Entity.User.user user;
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

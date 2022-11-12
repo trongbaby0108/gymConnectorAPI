@@ -1,9 +1,9 @@
 package com.Code.Service.Gym;
 
 
-import java.util.List;
-
 import com.Code.Entity.Gym.discount;
+
+import java.util.List;
 
 public interface discountService {
     public List<discount> getAll();

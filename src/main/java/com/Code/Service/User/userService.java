@@ -1,9 +1,9 @@
 package com.Code.Service.User;
 
 
-import java.util.List;
-
 import com.Code.Entity.User.user;
+
+import java.util.List;
 
 public interface userService {
 

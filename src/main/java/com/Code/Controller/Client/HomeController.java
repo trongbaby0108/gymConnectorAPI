@@ -34,23 +34,22 @@ public class HomeController {
     @Autowired
     private gymRateService gymRateService;
 
-
-
     @Autowired
     private ratePtService ratePtService;
 
     @RequestMapping("/getPT")
     public List<PTResponse> getPT() {
         List<PTResponse> ptModels = new ArrayList<>();
-        for (personalTrainer pt : personalTrainerService.getAll()) {
+        personalTrainerService.getAll().forEach(pt->{
             if (pt.getAccount().isEnable()) {
                 PTResponse ptModel = new PTResponse(pt);
                 ptModel.setRate(getPTRate(ptModel.getId()));
                 ptModels.add(ptModel);
-            }
-        }
+            };
+        });
         return ptModels;
     }
+
 
     @GetMapping("/getGym")
     public List<gymResponse> getGym() {
@@ -75,7 +74,7 @@ public class HomeController {
     }
 
     @GetMapping("/getComboByGym/{id}")
-    public List<combo> getComboByGym(@RequestParam int id) {
+    public List<combo> getComboByGym( @PathVariable int id) {
         return comboService.getByGym(id);
     }
 

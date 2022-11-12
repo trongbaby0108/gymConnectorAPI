@@ -39,7 +39,7 @@ public class personalTrainerSignInController {
     public MailSender mailSender;
 
     @PostMapping("/signIn")
-    public String signIn(@RequestBody ptSignUpRequest ptSignUpRequest) {
+    public HttpStatus signIn(@RequestBody ptSignUpRequest ptSignUpRequest) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         Account account = new Account(
                 ptSignUpRequest.getUsername(),
@@ -56,10 +56,10 @@ public class personalTrainerSignInController {
                 "",
                 ptSignUpRequest.getPrice(),
                 account,
-                gymService.findGymById(ptSignUpRequest.getGymID())
+                gymService.findGymById(ptSignUpRequest.getGymId())
         );
         personalTrainerService.save(personalTrainer);
-        return "Successful";
+        return HttpStatus.OK;
     }
 
     @PostMapping("/uploadAvatar")

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/personalTrainerAdmin")
+@RequestMapping("/admin/personalTrainer")
 public class personalTrainerAdminController {
     @Autowired
     private personalTrainerService personalTrainerService;

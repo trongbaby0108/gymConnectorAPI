@@ -24,8 +24,8 @@ public class gymController {
     private gymService gymService;
 
     @GetMapping("/getAll")
-    public List<gym> getAll(){
-        return gymService.getAll();
+    public ResponseEntity<List<gym>> getAll(){
+        return ResponseEntity.ok(gymService.getAll());
     }
 
     @PostMapping("/addGym")

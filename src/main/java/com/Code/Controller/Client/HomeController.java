@@ -14,6 +14,7 @@ import com.Code.Service.Gym.gymService;
 import com.Code.Service.PT.personalTrainerService;
 import com.Code.Service.PT.ratePtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -52,14 +53,14 @@ public class HomeController {
 
 
     @GetMapping("/getGym")
-    public List<gymResponse> getGym() {
+    public ResponseEntity<?> getGym() {
         List<gymResponse> res = new ArrayList<>();
         gymService.getAll().forEach(gym -> {
             gymResponse gymModel = new gymResponse(gym);
             gymModel.setRate(getGymRate(gym.getId()));
             res.add(gymModel);
         });
-        return res;
+        return ResponseEntity.ok(res);
     }
 
     public float getGymRate(int id) {
@@ -69,17 +70,17 @@ public class HomeController {
     }
 
     @GetMapping("/getCombo")
-    public List<combo> getCombo() {
-        return comboService.getAll();
+    public ResponseEntity<?>  getCombo() {
+        return ResponseEntity.ok(comboService.getAll());
     }
 
     @GetMapping("/getComboByGym/{id}")
-    public List<combo> getComboByGym( @PathVariable int id) {
-        return comboService.getByGym(id);
+    public ResponseEntity<?> getComboByGym( @PathVariable int id) {
+        return ResponseEntity.ok(comboService.getByGym(id));
     }
 
     @RequestMapping("/getPTByGym/{id}")
-    public List<PTResponse> getPTByGym(@PathVariable int id) {
+    public ResponseEntity<?> getPTByGym(@PathVariable int id) {
         List<PTResponse> ptModels = new ArrayList<>();
         for (personalTrainer pt : personalTrainerService.getPTByGym(id)) {
             if (pt.getAccount().isEnable()) {
@@ -88,7 +89,7 @@ public class HomeController {
                 ptModels.add(ptModel);
             }
         }
-        return ptModels;
+        return ResponseEntity.ok(ptModels);
     }
 
     public float getPTRate(int id) {
@@ -101,23 +102,25 @@ public class HomeController {
         return res / count;
     }
 
-    @GetMapping("/getRateByGym")
-    public List<gymRateResponse> getJudgeByGym(@RequestParam int id) {
+    @GetMapping("/getRateByGym/{id}")
+    public ResponseEntity<?> getJudgeByGym(@PathVariable int id) {
+        if(gymService.findGymById(id) == null) ResponseEntity.badRequest();
         List<gymRateResponse> res = new ArrayList<>();
         for (gymRate gymRate : gymRateService.getByGym(id)) {
             gymRateResponse gymRateResponse = new gymRateResponse(gymRate);
             res.add(gymRateResponse);
         }
-        return res;
+        return ResponseEntity.ok(res);
     }
 
-    @GetMapping("/getRateByPT")
-    public List<ptRateResponse> getRateByPT(@RequestParam int id) {
+    @GetMapping("/getRateByPT/{id}")
+    public ResponseEntity<?> getRateByPT(@PathVariable int id) {
+        if(personalTrainerService.findById(id) == null) ResponseEntity.badRequest();
         List<ptRateResponse> res = new ArrayList<>();
         for (ptRate judge_pt : ratePtService.getByPT(id)) {
             ptRateResponse ratePtResponse = new ptRateResponse(judge_pt);
             res.add(ratePtResponse);
         }
-        return res;
+        return ResponseEntity.ok(res);
     }
 }

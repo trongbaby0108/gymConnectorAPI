@@ -9,6 +9,8 @@ import com.Code.Service.PT.picPTService;
 import com.Code.Util.Uploader;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,7 +31,7 @@ public class ptImgController {
 
     @SneakyThrows
     @PostMapping("/save")
-    public String save(@RequestParam("id") int id, @RequestParam("pic") MultipartFile pic){
+    public HttpStatus save(@RequestParam("id") int id, @RequestParam("pic") MultipartFile pic){
         personalTrainer pt = personalTrainerService.findById(id);
         if(pt == null) throw new NotFoundException("Pt not found");
         Uploader uploader = new Uploader();
@@ -37,16 +39,16 @@ public class ptImgController {
         picPt.setPersonalTrainer(pt);
         picPt.setImg(uploader.uploadFile(pic));
         picPTService.save(picPt);
-        return "Successful";
+        return HttpStatus.OK;
     }
 
     @RequestMapping("/getByPt")
-    public List<ptImgResponse> getByPt(@RequestParam("id") int id){
+    public ResponseEntity<List<ptImgResponse>> getByPt(@RequestParam("id") int id){
         List<ptImgResponse> res = new ArrayList<>();
         for (picPt picPt: picPTService.getByPT(id)) {
             ptImgResponse ptIMGModel = new ptImgResponse(picPt);
             res.add(ptIMGModel);
         }
-        return res;
+        return ResponseEntity.ok(res);
     }
 }

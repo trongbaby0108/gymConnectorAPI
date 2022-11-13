@@ -1,19 +1,17 @@
 package com.Code.Exception;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import java.time.ZonedDateTime;
 
-public class ApiRequestException extends RuntimeException{
-    public ApiRequestException(String message) {
-        super(message);
-    }
-
-    public ApiRequestException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public ApiRequestException(String message, HttpStatus notFound, ZonedDateTime z) {
-
-    }
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ApiRequestException {
+    private String message;
+    private HttpStatus httpStatus;
+    private ZonedDateTime zonedDateTime;
 }

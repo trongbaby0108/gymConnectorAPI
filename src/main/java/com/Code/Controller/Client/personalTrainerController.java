@@ -1,4 +1,4 @@
-package com.Code.Controller.Admin;
+package com.Code.Controller.Client;
 
 import com.Code.Entity.PT.personalTrainer;
 import com.Code.Model.Request.ptUpdateRequest;

@@ -23,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 @RequestMapping(value = "/auth")
 @RestController
@@ -55,7 +56,7 @@ public class loginController {
         } catch (BadCredentialsException e) {
             throw new Exception("Incorect....", e);
         }
-        final UserDetails userDetails = userDetailService.loadUserByUsername(jwtRequest.getUsername());
+        final UserDetails userDetails = userDetailService.loadUserByUsername(jwtRequest.getUsername().trim());
         return jwtTokenUtil.generateToken(userDetails);
     }
 
@@ -64,7 +65,7 @@ public class loginController {
     public userInfoResponse getUserInfo(@RequestParam("jwt") String jwt) {
         jwtDecodeModel jwtDecodeModel = extractModel(jwt);
         Account accountResult = accountService.findByUsername(jwtDecodeModel.sub);
-        user user = userService.findByUserName(accountResult.getUsername());
+        user user = userService.findByUserName(accountResult.getUsername().trim());
         return new userInfoResponse(user);
     }
 
@@ -72,7 +73,7 @@ public class loginController {
     public PTResponse getPTInfo(@RequestParam("jwt") String jwt) {
         jwtDecodeModel jwtDecodeModel = extractModel(jwt);
         Account accountResult = accountService.findByUsername(jwtDecodeModel.sub);
-        personalTrainer pt = personaTrainerService.findByUsername(accountResult.getUsername());
+        personalTrainer pt = personaTrainerService.findByUsername(accountResult.getUsername().trim());
         return new PTResponse(pt);
     }
 
@@ -80,11 +81,7 @@ public class loginController {
         String[] pieces = jwt.split("\\.");
         String b64payload = pieces[1];
         String jsonString = null;
-        try {
-            jsonString = new String(Base64.decodeBase64(b64payload), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        jsonString = new String(Base64.decodeBase64(b64payload), StandardCharsets.UTF_8);
         return new Gson().fromJson(jsonString, jwtDecodeModel.class);
     }
 }

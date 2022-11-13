@@ -13,6 +13,7 @@ import com.Code.Service.Gym.gymService;
 import com.Code.Service.PT.personalTrainerService;
 import com.Code.Util.MailSender;
 import com.Code.Util.Uploader;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -73,7 +74,7 @@ public class personalTrainerSignInController {
     }
 
     @PostMapping("/sendToken")
-    public void sendToken(@RequestParam("username") String username) {
+    public HttpStatus sendToken(@RequestParam("username") String username) {
         Account account = AccountService.findByUsername(username);
         mailSender = new MailSender();
         token token = new token();
@@ -82,6 +83,7 @@ public class personalTrainerSignInController {
         token.setAccount(account);
         tokenService.save(token);
         mailSender.sendEmail(account.getEmail(), "Token", token.getToken());
+        return HttpStatus.OK;
     }
 
     @RequestMapping("/confirmToken")
@@ -99,19 +101,20 @@ public class personalTrainerSignInController {
     }
 
     @RequestMapping("/forgetPassword")
-    public void forgetPassword(
+    public HttpStatus forgetPassword(
             @RequestParam("username") String username,
             @RequestParam("newPassword") String newPassword) {
         Account account = AccountService.findByUsername(username);
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         account.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        return HttpStatus.OK;
     }
-
+    @SneakyThrows
     @RequestMapping("/changePassword")
     public HttpStatus changePassword(
             @RequestParam("username") String username,
             @RequestParam("password") String password,
-            @RequestParam("newPassword") String newPassword) throws Exception {
+            @RequestParam("newPassword") String newPassword) {
         Account account = AccountService.findByUsername(username);
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         if (bCryptPasswordEncoder.matches(password, account.getPassword())) {

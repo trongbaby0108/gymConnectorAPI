@@ -4,9 +4,11 @@ import com.Code.Entity.User.user;
 import com.Code.Enum.role;
 import com.Code.Exception.NotFoundException;
 import com.Code.Model.Response.userInfoResponse;
+import com.Code.Service.User.userService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,10 +20,10 @@ import java.util.List;
 @RequestMapping("/userAdmin")
 public class userAdminController {
     @Autowired
-    private com.Code.Service.User.userService userService ;
+    private userService userService ;
 
     @RequestMapping("/getUser")
-    public List<userInfoResponse> getUser(){
+    public ResponseEntity<?>getUser(){
         List<userInfoResponse> res = new ArrayList<>();
         userService.getAll().forEach(user -> {
             if (user.getAccount().getRole() == role.USER){
@@ -29,7 +31,7 @@ public class userAdminController {
                 res.add(userInfoResponse);
             }
         });
-        return res ;
+        return ResponseEntity.ok(res);
     }
 
     @SneakyThrows

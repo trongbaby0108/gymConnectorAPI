@@ -119,7 +119,7 @@ public class userSignInController {
 
     @SneakyThrows
     @PostMapping("/changePassword")
-    public void changePassword(@RequestBody changePasswordRequest changePasswordRequest) {
+    public HttpStatus changePassword(@RequestBody changePasswordRequest changePasswordRequest) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         Account account = AccountService.findByUsername(changePasswordRequest.getUsername());
         if(account == null)
@@ -128,8 +128,11 @@ public class userSignInController {
             throw new NotFoundException("account is disable");
         else if (bCryptPasswordEncoder.matches(changePasswordRequest.getPassword(), account.getPassword()))
             throw new NotFoundException("password not match");
-        else
+        else{
             account.setPassword(bCryptPasswordEncoder.encode(changePasswordRequest.getNewPassword()));
+            return HttpStatus.OK;
+        }
+
     }
 
     @RequestMapping("/createGoogleUser")

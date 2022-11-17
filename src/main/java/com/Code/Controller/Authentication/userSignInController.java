@@ -140,9 +140,10 @@ public class userSignInController {
             @RequestParam("email") String email,
             @RequestParam("name") String name,
             @RequestParam("avatar") String avatar) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         Account accountResult = AccountService.findByUsername(email);
         if (accountResult == null) {
-            Account account = new Account(email, "", email, "", true, role.USER, typeAccount.GOOGLE);
+            Account account = new Account(email, bCryptPasswordEncoder.encode(email), email, "", true, role.USER, typeAccount.GOOGLE);
             AccountService.save(account);
             user user = new user();
             user.setAccount(account);
@@ -156,4 +157,6 @@ public class userSignInController {
             return new userInfoResponse(user);
         }
     }
+
+
 }

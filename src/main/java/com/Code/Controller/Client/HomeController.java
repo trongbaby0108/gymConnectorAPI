@@ -1,17 +1,17 @@
 package com.Code.Controller.Client;
 
-import com.Code.Entity.Gym.combo;
 import com.Code.Entity.Gym.gymRate;
-import com.Code.Entity.PT.personalTrainer;
 import com.Code.Entity.PT.ptRate;
 import com.Code.Model.Response.PTResponse;
 import com.Code.Model.Response.gymRateResponse;
 import com.Code.Model.Response.gymResponse;
 import com.Code.Model.Response.ptRateResponse;
 import com.Code.Service.Gym.comboService;
+import com.Code.Service.Gym.gymPicService;
 import com.Code.Service.Gym.gymRateService;
 import com.Code.Service.Gym.gymService;
 import com.Code.Service.PT.personalTrainerService;
+import com.Code.Service.PT.picPTService;
 import com.Code.Service.PT.ratePtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +38,12 @@ public class HomeController {
     @Autowired
     private ratePtService ratePtService;
 
+    @Autowired
+    private picPTService picPTService;
+
+    @Autowired
+    private gymPicService gymPicService;
+
     @RequestMapping("/getPT")
     public List<PTResponse> getPT() {
         List<PTResponse> ptModels = new ArrayList<>();
@@ -51,6 +57,15 @@ public class HomeController {
         return ptModels;
     }
 
+    @GetMapping("/getPicByPt/{id}")
+    public ResponseEntity<?> getImgByPT(@PathVariable int id){
+        return ResponseEntity.ok(picPTService.getByPT(id));
+    }
+
+    @GetMapping("/getPicByGym/{id}")
+    public ResponseEntity<?> getPicByGym(@PathVariable int id){
+        return ResponseEntity.ok(gymPicService.getByGym(id));
+    }
 
     @GetMapping("/getGym")
     public ResponseEntity<?> getGym() {
@@ -82,13 +97,13 @@ public class HomeController {
     @RequestMapping("/getPTByGym/{id}")
     public ResponseEntity<?> getPTByGym(@PathVariable int id) {
         List<PTResponse> ptModels = new ArrayList<>();
-        for (personalTrainer pt : personalTrainerService.getPTByGym(id)) {
+        personalTrainerService.getPTByGym(id).forEach(pt->{
             if (pt.getAccount().isEnable()) {
                 PTResponse ptModel = new PTResponse(pt);
                 ptModel.setRate(getPTRate(pt.getId()));
                 ptModels.add(ptModel);
             }
-        }
+        });
         return ResponseEntity.ok(ptModels);
     }
 

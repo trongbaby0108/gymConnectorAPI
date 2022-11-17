@@ -6,6 +6,7 @@ import com.Code.Entity.PT.personalTrainer;
 import com.Code.Enum.role;
 import com.Code.Enum.tokenType;
 import com.Code.Enum.typeAccount;
+import com.Code.Exception.NotFoundException;
 import com.Code.Model.Request.ptSignUpRequest;
 import com.Code.Service.Auth.AccountService;
 import com.Code.Service.Auth.tokenService;
@@ -16,6 +17,8 @@ import com.Code.Util.Uploader;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +40,9 @@ public class personalTrainerSignInController {
     @Autowired
     private tokenService tokenService;
 
-    public MailSender mailSender;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     @PostMapping("/signIn")
     public HttpStatus signIn(@RequestBody ptSignUpRequest ptSignUpRequest) {
@@ -73,17 +78,27 @@ public class personalTrainerSignInController {
         return "Successful";
     }
 
-    @PostMapping("/sendToken")
+    @GetMapping("/sendToken")
     public HttpStatus sendToken(@RequestParam("username") String username) {
         Account account = AccountService.findByUsername(username);
-        mailSender = new MailSender();
         token token = new token();
         token.genNewToken();
         token.setTokenType(tokenType.REPASSWORD);
         token.setAccount(account);
         tokenService.save(token);
-        mailSender.sendEmail(account.getEmail(), "Token", token.getToken());
+        sendEmail(account.getEmail(), "Token", token.getToken());
         return HttpStatus.OK;
+    }
+
+    public void sendEmail(String toEmail,
+                          String subject,
+                          String body) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom("ngaitrong0108@gmail.com");
+        mailMessage.setTo(toEmail);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(body);
+        javaMailSender.send(mailMessage);
     }
 
     @RequestMapping("/confirmToken")

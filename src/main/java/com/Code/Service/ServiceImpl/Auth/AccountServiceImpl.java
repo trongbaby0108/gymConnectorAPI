@@ -25,7 +25,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @SneakyThrows
     public Account findByUsername(String username) {
-        return accountRepository.findByUsername(username).orElseThrow(()->new NotFoundException("not found this gym"));
+        return accountRepository.findByUsername(username);
     }
 
     @Override

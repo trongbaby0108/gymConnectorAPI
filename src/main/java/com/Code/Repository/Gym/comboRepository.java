@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface comboRepository extends JpaRepository<combo,Integer> {
 
-    @Query(value = "select * from combo where gym_id :=",nativeQuery = true)
+    @Query(value = "select * from combo where gym_id = :id",nativeQuery = true)
     public List<combo> getComboByGym(int id);
 }

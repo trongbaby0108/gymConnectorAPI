@@ -29,13 +29,13 @@ class accountServiceImplTest {
 
     @Test
     void findByUserName_validName_ThrowNotFoundException() {
-        when(repository.findByUsername("abc")).thenReturn(Optional.empty());
+//        when(repository.findByUsername("abc")).thenReturn(Optional.empty());
         assertThrows(NotFoundException.class, () -> service.findByUsername("abc"));
     }
 
     @Test
     void findByUserName_validName_Success() {
-        when(repository.findByUsername("abc")).thenReturn(Optional.of(account));
+//        when(repository.findByUsername("abc")).thenReturn(Optional.of(account));
         assertEquals(service.findByUsername("abc"),account);
     }
 

@@ -3,6 +3,7 @@ package com.Code.Controller.Client;
 import com.Code.Entity.Gym.gymRate;
 import com.Code.Entity.PT.ptRate;
 import com.Code.Model.Request.addCommentPtRequest;
+import com.Code.Model.Request.addGymCommentRequest;
 import com.Code.Service.Gym.gymRateService;
 import com.Code.Service.Gym.gymService;
 import com.Code.Service.PT.personalTrainerService;
@@ -12,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/client/ptRate")
-public class commandController {
+@RequestMapping("/client/comment")
+public class commentController {
 
     @Autowired
     private ratePtService ratePtService;
@@ -40,13 +41,13 @@ public class commandController {
         ratePtService.save(ptRate);
         return "successful";
     }
-    @GetMapping("/addGymComment")
-    public String addComment(@RequestParam String content, @RequestParam float vote, @RequestParam int gymId, @RequestParam int userId) {
+    @PostMapping("/addGymComment")
+    public String addComment(@RequestBody addGymCommentRequest addGymCommentRequest) {
         gymRate gymRate = new gymRate();
-        gymRate.setContent(content);
-        gymRate.setVote(vote);
-        gymRate.setGym(gymService.findGymById(gymId));
-        gymRate.setUser(userService.findById(userId));
+        gymRate.setContent(addGymCommentRequest.getContent());
+        gymRate.setVote(addGymCommentRequest.getVote());
+        gymRate.setGym(gymService.findGymById(addGymCommentRequest.getGymId()));
+        gymRate.setUser(userService.findById(addGymCommentRequest.getUserId()));
         gymRateService.save(gymRate);
         return "successful";
     }

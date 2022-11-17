@@ -6,6 +6,7 @@ import com.Code.Entity.User.user;
 import com.Code.Model.Response.billPTResponse;
 import com.Code.Service.PT.personalTrainerService;
 import com.Code.Service.Payment.billPtService;
+import com.Code.Service.User.userService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +21,7 @@ public class billPtController {
     private billPtService bill_ptService;
 
     @Autowired
-    private com.Code.Service.User.userService userService;
+    private userService userService;
 
 
     @Autowired
@@ -51,8 +52,8 @@ public class billPtController {
         if (bill != null) {
             billPTResponse.setId(bill.getId());
             billPTResponse.setTrainer(bill.getPersonal_trainer());
-            billPTResponse.setDayStart(bill.getDayStart());
-            billPTResponse.setDayEnd(bill.getDayEnd());
+            billPTResponse.setDayStart(bill.getDayStart().toString());
+            billPTResponse.setDayEnd(bill.getDayEnd().toString());
             return billPTResponse;
         }
         return billPTResponse;

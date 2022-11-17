@@ -1,6 +1,5 @@
 package com.Code.Controller.Admin;
 
-import com.Code.Entity.Payment.billPt;
 import com.Code.Entity.User.user;
 import com.Code.Exception.NotFoundException;
 import com.Code.Model.Request.updateUserRequest;
@@ -8,7 +7,6 @@ import com.Code.Model.Response.userInfoResponse;
 import com.Code.Service.Payment.billPtService;
 import com.Code.Service.User.userService;
 import lombok.SneakyThrows;
-import org.apache.http.protocol.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +26,7 @@ public class userController {
 
     @SneakyThrows
     @PostMapping("/update")
-    public HttpStatus update(@RequestBody updateUserRequest updateUserRequest) {
+    public ResponseEntity update(@RequestBody updateUserRequest updateUserRequest) {
         user user = userService.findById(updateUserRequest.getId());
         if(user == null) throw new NotFoundException("user not found");
         user.getAccount().setEmail(updateUserRequest.getEmail());
@@ -36,7 +34,7 @@ public class userController {
         user.setAddress(updateUserRequest.getAddress());
         user.setName(updateUserRequest.getName());
         userService.save(user);
-        return HttpStatus.OK;
+        return ResponseEntity.ok(new userInfoResponse(user));
     }
 
     @RequestMapping("/getUserByPT")

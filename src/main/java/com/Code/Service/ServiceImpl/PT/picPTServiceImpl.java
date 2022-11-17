@@ -2,13 +2,12 @@ package com.Code.Service.ServiceImpl.PT;
 
 import com.Code.Entity.PT.picPt;
 import com.Code.Exception.NotFoundException;
-import com.Code.Repository.Gym.picPTRepository;
+import com.Code.Repository.PT.picPTRepository;
 import com.Code.Service.PT.picPTService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

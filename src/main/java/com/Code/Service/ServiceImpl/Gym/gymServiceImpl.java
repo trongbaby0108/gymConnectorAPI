@@ -19,19 +19,17 @@ public class gymServiceImpl implements gymService {
     }
 
     @Override
-    @SneakyThrows
     public List<gym> getAll() {
         return gymRepo.findAll();
     }
 
     @Override
-    @SneakyThrows
     public void save(gym gym) {
         gymRepo.save(gym);
     }
 
-    @Override
     @SneakyThrows
+    @Override
     public gym findGymById(int id) {
         return gymRepo.findById(id).orElseThrow(() -> new NotFoundException("not found this gym"));
     }

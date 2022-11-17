@@ -3,6 +3,7 @@ package com.Code.Controller.Admin;
 import com.Code.Entity.Gym.combo;
 import com.Code.Entity.Gym.gym;
 import com.Code.Exception.ApiRequestException;
+import com.Code.Exception.NotFoundException;
 import com.Code.Model.Request.addComboRequest;
 import com.Code.Model.Request.updateComboRequest;
 import com.Code.Service.Gym.comboService;
@@ -22,11 +23,10 @@ public class comboController {
     @Autowired
     private gymService gymService;
 
-    @SneakyThrows
     @PostMapping("addCombo")
-    public ResponseEntity<?> addCombo(@RequestBody addComboRequest addComboRequest){
+    public ResponseEntity<combo> addCombo(@RequestBody addComboRequest addComboRequest) {
         gym gym = gymService.findGymById(addComboRequest.getGymId());
-        if(gym == null) throw new ApiRequestException("Gym not found");
+        //if(gym == null) throw new ApiRequestException("Gym not found");
         combo combo = new combo();
         combo.setName(addComboRequest.getName());
         combo.setPrice(addComboRequest.getPrice());

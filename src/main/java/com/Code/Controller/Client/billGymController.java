@@ -60,8 +60,8 @@ public class billGymController {
         billGym bill = bill_gymService.getByUser(idUser);
         if (bill != null) {
             billGymResponse.setId(bill.getId());
-            billGymResponse.setDayStart(bill.getDayStart());
-            billGymResponse.setDayEnd(bill.getDayEnd());
+            billGymResponse.setDayStart(bill.getDayStart().toString());
+            billGymResponse.setDayEnd(bill.getDayEnd().toString());
             billGymResponse.setGym(bill.getGym());
             billGymResponse.setCombo(bill.getCombo());
             return billGymResponse;

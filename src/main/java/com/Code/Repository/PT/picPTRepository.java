@@ -1,4 +1,4 @@
-package com.Code.Repository.Gym;
+package com.Code.Repository.PT;
 
 import com.Code.Entity.PT.picPt;
 import com.Code.Entity.PT.ptRate;

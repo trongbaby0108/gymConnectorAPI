@@ -140,7 +140,8 @@ public class userSignInController {
             @RequestParam("email") String email,
             @RequestParam("name") String name,
             @RequestParam("avatar") String avatar) {
-        if (AccountService.findByUsername(email) == null) {
+        Account accountResult = AccountService.findByUsername(email);
+        if (accountResult == null) {
             Account account = new Account(email, "", email, "", true, role.USER, typeAccount.GOOGLE);
             AccountService.save(account);
             user user = new user();
@@ -151,7 +152,6 @@ public class userSignInController {
             userService.save(user);
             return new userInfoResponse(user);
         } else {
-            Account accountResult = AccountService.findByUsername(email);
             user user = userService.findByUserName(accountResult.getUsername());
             return new userInfoResponse(user);
         }

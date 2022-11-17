@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 @Data
 public class billGymResponse {
     private int id ;
-    private LocalDateTime dayStart ;
-    private LocalDateTime dayEnd ;
+    private String dayStart ;
+    private String dayEnd ;
     private com.Code.Entity.Gym.gym gym;
     private com.Code.Entity.Gym.combo combo;
 }

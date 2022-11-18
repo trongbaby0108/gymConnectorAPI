@@ -1,4 +1,4 @@
-package com.Code.Controller.Admin;
+package com.Code.Controller.Client;
 
 import com.Code.Entity.User.user;
 import com.Code.Exception.NotFoundException;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/client/user")
 public class userController {
     @Autowired
     private userService userService;
@@ -37,16 +37,5 @@ public class userController {
         return ResponseEntity.ok(new userInfoResponse(user));
     }
 
-    @RequestMapping("/getUserByPT")
-    public ResponseEntity<?> getUserByPT(@RequestParam("idPT") int idPT) {
-        List<userInfoResponse> res = new ArrayList<>();
-        billPtService.getAll().forEach(bill -> {
-            if (bill.getPersonal_trainer().getId() == idPT && bill.getUser().getAccount().isEnable()) {
-                userInfoResponse userInfoResponse = new userInfoResponse(bill.getUser());
-                res.add(userInfoResponse);
-            }
-        });
-        if(res.size() != 0) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(res);
-    }
+
 }

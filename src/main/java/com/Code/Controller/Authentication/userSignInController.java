@@ -75,15 +75,17 @@ public class userSignInController {
     @PostMapping("/uploadAvatar")
     private HttpStatus uploadAvatar(@RequestParam("username") String username,
             @RequestParam("avatar") MultipartFile avatar) {
-        user user = userService.findByUserName(username);
+        user user = userService.findByUserName(username.trim());
+        //if(user == null) System.out.println(username + " is null");
         Uploader uploader = new Uploader();
         user.setAvatar(uploader.uploadFile(avatar));
         userService.save(user);
         return HttpStatus.OK;
     }
 
-    @RequestMapping("/sendToken")
+    @PostMapping("/sendToken")
     public HttpStatus sendToken(@RequestParam("username") String username) {
+        System.out.println("sending....");
         Account account = AccountService.findByUsername(username);
         token token = new token();
         token.genNewToken();
@@ -132,7 +134,6 @@ public class userSignInController {
             account.setPassword(bCryptPasswordEncoder.encode(changePasswordRequest.getNewPassword()));
             return HttpStatus.OK;
         }
-
     }
 
     @RequestMapping("/createGoogleUser")

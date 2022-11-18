@@ -61,7 +61,7 @@ public class loginController {
     }
 
 
-    @GetMapping(value = "/getUserInfo")
+    @PostMapping(value = "/getUserInfo")
     public userInfoResponse getUserInfo(@RequestParam("jwt") String jwt) {
         jwtDecodeModel jwtDecodeModel = extractModel(jwt);
         Account accountResult = accountService.findByUsername(jwtDecodeModel.sub);
@@ -69,7 +69,7 @@ public class loginController {
         return new userInfoResponse(user);
     }
 
-    @GetMapping(value = "/getPTInfo")
+    @PostMapping(value = "/getPTInfo")
     public PTResponse getPTInfo(@RequestParam("jwt") String jwt) {
         jwtDecodeModel jwtDecodeModel = extractModel(jwt);
         Account accountResult = accountService.findByUsername(jwtDecodeModel.sub);

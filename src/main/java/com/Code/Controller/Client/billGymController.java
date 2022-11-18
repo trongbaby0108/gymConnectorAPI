@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/billGym")
+@RequestMapping("client/billGym")
 public class billGymController {
     @Autowired
     private billGymService bill_gymService;

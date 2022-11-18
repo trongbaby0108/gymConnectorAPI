@@ -26,10 +26,11 @@ public class userServiceImpl implements userService {
 
     @Override
     public user findByUserName(String username) {
-        for (user user :
-             userRepository.findAll()) {
-            if(user.getAccount().getUsername().equals(username))
+        for (user user : userRepository.findAll()) {
+            if(user.getAccount().getUsername().equals(username)){
                 return user ;
+            }
+
         }
         return null;
     }

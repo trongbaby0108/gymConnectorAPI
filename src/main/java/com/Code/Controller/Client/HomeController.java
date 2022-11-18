@@ -78,6 +78,11 @@ public class HomeController {
         return ResponseEntity.ok(res);
     }
 
+    @GetMapping("/getGymById/{id}")
+    public ResponseEntity<?> getGymById(@PathVariable int id) {
+        return ResponseEntity.ok(gymService.findGymById(id));
+    }
+
     public float getGymRate(int id) {
         List<gymRate> gymRates = gymRateService.getByGym(id);
         float res = (float) gymRates.stream().mapToDouble(gymRate::getVote).sum();
@@ -93,6 +98,8 @@ public class HomeController {
     public ResponseEntity<?> getComboByGym( @PathVariable int id) {
         return ResponseEntity.ok(comboService.getByGym(id));
     }
+
+
 
     @RequestMapping("/getPTByGym/{id}")
     public ResponseEntity<?> getPTByGym(@PathVariable int id) {

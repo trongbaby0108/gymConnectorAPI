@@ -38,7 +38,7 @@ public class webSercurity extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/admin/**")
 //                .hasAnyAuthority("ADMIN")
 //                .antMatchers("/client/**")
-//                .hasAnyAuthority("ADMIN","USER")
+//                .hasAnyAuthority("ADMIN","USER","PERSONAL_TRAINER")
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

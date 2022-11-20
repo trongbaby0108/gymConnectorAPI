@@ -66,6 +66,6 @@ public class billGymController {
             billGymResponse.setCombo(bill.getCombo());
             return billGymResponse;
         }
-        return billGymResponse;
+        return null;
     }
 }

@@ -12,9 +12,11 @@ import com.Code.Service.Auth.AccountService;
 import com.Code.Service.PT.personalTrainerService;
 import com.Code.Service.User.userService;
 import com.google.gson.Gson;
+import io.jsonwebtoken.impl.DefaultClaims;
 import lombok.SneakyThrows;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,8 +24,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 @RequestMapping(value = "/auth")
 @RestController
@@ -59,7 +64,6 @@ public class loginController {
         final UserDetails userDetails = userDetailService.loadUserByUsername(jwtRequest.getUsername().trim());
         return jwtTokenUtil.generateToken(userDetails);
     }
-
 
     @PostMapping(value = "/getUserInfo")
     public userInfoResponse getUserInfo(@RequestParam("jwt") String jwt) {

@@ -8,6 +8,7 @@ import com.Code.Service.PT.personalTrainerService;
 import com.Code.Service.Payment.billPtService;
 import com.Code.Service.User.userService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/billPt")
+@RequestMapping("client/billPt")
 public class billPtController {
     @Autowired
     private billPtService bill_ptService;
@@ -46,7 +47,7 @@ public class billPtController {
     }
 
     @RequestMapping("checkPTExit")
-    public billPTResponse checkGymExit(@RequestParam("idUser") int idUser) {
+    public ResponseEntity<?> checkGymExit(@RequestParam("idUser") int idUser) {
         billPTResponse billPTResponse = new billPTResponse();
         billPt bill = bill_ptService.getByUser(idUser);
         if (bill != null) {
@@ -54,8 +55,8 @@ public class billPtController {
             billPTResponse.setTrainer(bill.getPersonal_trainer());
             billPTResponse.setDayStart(bill.getDayStart().toString());
             billPTResponse.setDayEnd(bill.getDayEnd().toString());
-            return billPTResponse;
+            return ResponseEntity.ok(billPTResponse);
         }
-        return billPTResponse;
+        return ResponseEntity.badRequest().build();
     }
 }

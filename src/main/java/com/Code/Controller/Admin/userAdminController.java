@@ -9,6 +9,7 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,12 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/userAdmin")
+@RequestMapping("/admin/user")
 public class userAdminController {
     @Autowired
     private userService userService ;
 
-    @RequestMapping("/getUser")
+    @RequestMapping("/getAll")
     public ResponseEntity<?>getUser(){
         List<userInfoResponse> res = new ArrayList<>();
         userService.getAll().forEach(user -> {
@@ -35,9 +36,9 @@ public class userAdminController {
     }
 
     @SneakyThrows
-    @RequestMapping("/disableUser")
-    public HttpStatus disableUser(@RequestParam("idUser") int idUser){
-        user user = userService.findById(idUser);
+    @RequestMapping("/disableUser/{id}")
+    public HttpStatus disableUser(@PathVariable("id") int id){
+        user user = userService.findById(id);
         if(user == null) throw new NotFoundException("user not found");
         user.getAccount().setEnable(false);
         userService.save(user);
@@ -45,9 +46,9 @@ public class userAdminController {
     }
 
     @SneakyThrows
-    @RequestMapping("/enableUser")
-    public HttpStatus enableUser(@RequestParam("idUser") int idUser){
-        user user = userService.findById(idUser);
+    @RequestMapping("/enableUser/{id}")
+    public HttpStatus enableUser(@PathVariable("id") int id){
+        user user = userService.findById(id);
         if(user == null) throw new NotFoundException("user not found");
         user.getAccount().setEnable(true);
         userService.save(user);

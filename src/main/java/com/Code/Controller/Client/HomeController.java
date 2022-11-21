@@ -1,5 +1,6 @@
 package com.Code.Controller.Client;
 
+import com.Code.Entity.Gym.combo;
 import com.Code.Entity.Gym.gymRate;
 import com.Code.Entity.PT.ptRate;
 import com.Code.Model.Response.PTResponse;
@@ -71,9 +72,11 @@ public class HomeController {
     public ResponseEntity<?> getGym() {
         List<gymResponse> res = new ArrayList<>();
         gymService.getAll().forEach(gym -> {
-            gymResponse gymModel = new gymResponse(gym);
-            gymModel.setRate(getGymRate(gym.getId()));
-            res.add(gymModel);
+            if(gym.isEnable()){
+                gymResponse gymModel = new gymResponse(gym);
+                gymModel.setRate(getGymRate(gym.getId()));
+                res.add(gymModel);
+            }
         });
         return ResponseEntity.ok(res);
     }
@@ -91,12 +94,20 @@ public class HomeController {
 
     @GetMapping("/getCombo")
     public ResponseEntity<?>  getCombo() {
-        return ResponseEntity.ok(comboService.getAll());
+        List<combo> combos = new ArrayList<>();
+        comboService.getAll().forEach((combo)->{
+            if(combo.isEnable()) combos.add(combo);
+        });
+        return ResponseEntity.ok(combos);
     }
 
     @GetMapping("/getComboByGym/{id}")
     public ResponseEntity<?> getComboByGym( @PathVariable int id) {
-        return ResponseEntity.ok(comboService.getByGym(id));
+        List<combo> combos = new ArrayList<>();
+        comboService.getByGym(id).forEach((combo)->{
+            if(combo.isEnable()) combos.add(combo);
+        });
+        return ResponseEntity.ok(combos);
     }
 
 

@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/admin/combo")
 public class comboController {
@@ -23,6 +25,10 @@ public class comboController {
     @Autowired
     private gymService gymService;
 
+    @GetMapping("getAll")
+    public ResponseEntity<List<combo>> getAllCombo(){
+        return ResponseEntity.ok(comboService.getAll());
+    }
     @PostMapping("addCombo")
     public ResponseEntity<combo> addCombo(@RequestBody addComboRequest addComboRequest) {
         gym gym = gymService.findGymById(addComboRequest.getGymId());
@@ -54,13 +60,19 @@ public class comboController {
         return HttpStatus.OK;
     }
 
-    @RequestMapping("/disableCombo")
-    public HttpStatus disableCombo(@RequestParam int id){
+    @RequestMapping("/disableCombo/{id}")
+    public HttpStatus disableCombo(@PathVariable int id){
+        combo combo = comboService.findByid(id);
+        combo.setEnable(false);
+        comboService.save(combo);
         return HttpStatus.OK;
     }
 
-    @RequestMapping("/enableCombo")
-    public HttpStatus enableCombo(@RequestParam int id){
+    @RequestMapping("/enableCombo/{id}")
+    public HttpStatus enableCombo(@PathVariable int id){
+        combo combo = comboService.findByid(id);
+        combo.setEnable(true);
+        comboService.save(combo);
         return HttpStatus.OK;
     }
 }

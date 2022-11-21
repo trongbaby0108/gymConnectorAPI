@@ -9,10 +9,7 @@ import com.Code.Service.Payment.billPtService;
 import com.Code.Service.User.userService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +38,7 @@ public class personalTrainerController {
         return new PTResponse(pt);
     }
 
-    @RequestMapping("/getUserByPT")
+    @PostMapping ("/getUserByPT")
     public ResponseEntity<?> getUserByPT(@RequestParam("idPT") int idPT) {
         List<userInfoResponse> res = new ArrayList<>();
         billPtService.getAll().forEach(bill -> {

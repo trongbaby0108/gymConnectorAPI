@@ -28,15 +28,20 @@ public class gymController {
         return ResponseEntity.ok(gymService.getAll());
     }
 
+    @GetMapping("/getGymById/{id}")
+    public ResponseEntity<gym> getGymById(@PathVariable int id){
+        return ResponseEntity.ok(gymService.findGymById(id));
+    }
+
     @PostMapping("/addGym")
-    public HttpStatus addGym(@RequestBody addGymRequest addGymRequest){
+    public gym addGym(@RequestBody addGymRequest addGymRequest){
         gym gym = new gym();
         gym.setAddress(addGymRequest.getAddress());
         gym.setEmail(addGymRequest.getEmail());
         gym.setName(addGymRequest.getName());
         gym.setPhone(addGymRequest.getPhone());
         gymService.save(gym);
-        return HttpStatus.OK;
+        return gym;
     }
 
     @SneakyThrows
@@ -51,6 +56,7 @@ public class gymController {
         gymService.save(gym);
         return HttpStatus.OK;
     }
+
     @SneakyThrows
     @PostMapping("/addGymImg")
     public ResponseEntity<?> addGymImg(@RequestParam("img") MultipartFile img, @RequestParam("id") int id) {

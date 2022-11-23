@@ -56,6 +56,7 @@ public class personalTrainerSignInController {
                 role.PERSONAL_TRAINER,
                 typeAccount.NORMAL);
         AccountService.save(account);
+        System.out.println(ptSignUpRequest.toString());
         personalTrainer personalTrainer = new personalTrainer(
                 ptSignUpRequest.getName(),
                 ptSignUpRequest.getAddress(),
@@ -78,7 +79,7 @@ public class personalTrainerSignInController {
         return "Successful";
     }
 
-    @GetMapping("/sendToken")
+    @PostMapping("/sendToken")
     public HttpStatus sendToken(@RequestParam("username") String username) {
         Account account = AccountService.findByUsername(username);
         token token = new token();

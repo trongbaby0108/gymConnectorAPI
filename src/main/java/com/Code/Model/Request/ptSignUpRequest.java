@@ -1,8 +1,10 @@
 package com.Code.Model.Request;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
 public class ptSignUpRequest {
     private String username;
     private String password;

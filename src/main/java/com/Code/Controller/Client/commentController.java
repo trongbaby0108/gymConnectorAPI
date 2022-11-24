@@ -43,6 +43,10 @@ public class commentController {
     }
     @PostMapping("/addGymComment")
     public String addComment(@RequestBody addGymCommentRequest addGymCommentRequest) {
+        System.out.println(addGymCommentRequest.getContent());
+        System.out.println(addGymCommentRequest.getVote());
+        System.out.println(addGymCommentRequest.getUserId());
+        System.out.println(addGymCommentRequest.getGymId());
         gymRate gymRate = new gymRate();
         gymRate.setContent(addGymCommentRequest.getContent());
         gymRate.setVote(addGymCommentRequest.getVote());

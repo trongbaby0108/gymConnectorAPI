@@ -11,6 +11,7 @@ import com.Code.Service.Gym.gymService;
 import com.Code.Service.Payment.billGymService;
 import com.Code.Service.User.userService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,10 +55,10 @@ public class billGymController {
         return true;
     }
 
-    @RequestMapping("/checkGymExit")
-    public billGymResponse checkGymExit(@RequestParam("idUser") int idUser) {
+    @RequestMapping("/checkGymExit/{id}")
+    public billGymResponse checkGymExit(@PathVariable("id") int id) {
         billGymResponse billGymResponse = new billGymResponse();
-        billGym bill = bill_gymService.getByUser(idUser);
+        billGym bill = bill_gymService.getByUser(id);
         if (bill != null) {
             billGymResponse.setId(bill.getId());
             billGymResponse.setDayStart(bill.getDayStart().toString());

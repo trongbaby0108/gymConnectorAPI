@@ -9,6 +9,7 @@ import com.Code.Service.Payment.billPtService;
 import com.Code.Service.User.userService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,10 +47,10 @@ public class billPtController {
         return true;
     }
 
-    @RequestMapping("checkPTExit")
-    public ResponseEntity<?> checkGymExit(@RequestParam("idUser") int idUser) {
+    @RequestMapping("checkPTExit/{id}")
+    public ResponseEntity<?> checkPTExit(@PathVariable("id") int id) {
         billPTResponse billPTResponse = new billPTResponse();
-        billPt bill = bill_ptService.getByUser(idUser);
+        billPt bill = bill_ptService.getByUser(id);
         if (bill != null) {
             billPTResponse.setId(bill.getId());
             billPTResponse.setTrainer(bill.getPersonal_trainer());

@@ -45,7 +45,7 @@ public class webSercurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**")
                 .hasAnyAuthority("ADMIN")
                 .antMatchers("/client/**")
-                .hasAnyAuthority("ADMIN","USER","PERSONAL_TRAINER")
+                .hasAnyAuthority("USER","PERSONAL_TRAINER")
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.cors().configurationSource(request -> {

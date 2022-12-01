@@ -21,14 +21,11 @@ public class userController {
     @Autowired
     private userService userService;
 
-    @Autowired
-    private billPtService billPtService;
-
     @SneakyThrows
     @PostMapping("/update")
-    public ResponseEntity update(@RequestBody updateUserRequest updateUserRequest) {
+    public ResponseEntity<?> update(@RequestBody updateUserRequest updateUserRequest) {
         user user = userService.findById(updateUserRequest.getId());
-        if(user == null) throw new NotFoundException("user not found");
+        if (user == null) throw new NotFoundException("user not found");
         user.getAccount().setEmail(updateUserRequest.getEmail());
         user.getAccount().setPhone(updateUserRequest.getPhone());
         user.setAddress(updateUserRequest.getAddress());
@@ -36,6 +33,4 @@ public class userController {
         userService.save(user);
         return ResponseEntity.ok(new userInfoResponse(user));
     }
-
-
 }

@@ -3,6 +3,7 @@ package com.Code.Controller.Client;
 import com.Code.Entity.PT.personalTrainer;
 import com.Code.Entity.Payment.billPt;
 import com.Code.Entity.User.user;
+import com.Code.Model.Response.PTResponse;
 import com.Code.Model.Response.billPTResponse;
 import com.Code.Service.PT.personalTrainerService;
 import com.Code.Service.Payment.billPtService;
@@ -53,7 +54,7 @@ public class billPtController {
         billPt bill = bill_ptService.getByUser(id);
         if (bill != null) {
             billPTResponse.setId(bill.getId());
-            billPTResponse.setTrainer(bill.getPersonal_trainer());
+            billPTResponse.setTrainer(new PTResponse(bill.getPersonal_trainer()));
             billPTResponse.setDayStart(bill.getDayStart().toString());
             billPTResponse.setDayEnd(bill.getDayEnd().toString());
             return ResponseEntity.ok(billPTResponse);

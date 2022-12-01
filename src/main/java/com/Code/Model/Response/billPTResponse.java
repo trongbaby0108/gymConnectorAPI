@@ -10,5 +10,5 @@ public class billPTResponse {
     private int id ;
     private String dayStart ;
     private String dayEnd ;
-    private personalTrainer trainer;
+    private PTResponse trainer;
 }

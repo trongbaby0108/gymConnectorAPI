@@ -18,6 +18,7 @@ public class picPt {
     @Column(name= "picPtId")
     private int id;
     private String img ;
+
     @ManyToOne
     @JoinColumn(name = "ptId",referencedColumnName = "ptId")
     private personalTrainer personalTrainer;

@@ -58,13 +58,15 @@ public class gymController {
     }
 
     @SneakyThrows
-    @PostMapping("/addGymImg")
-    public ResponseEntity<?> addGymImg(@RequestParam("img") MultipartFile img, @RequestParam("id") int id) {
+    @PostMapping(value = "/addGymImg")
+    public ResponseEntity<?> addGymImg(@RequestParam(value = "idGym") int id, @RequestParam(value ="image") MultipartFile img) {
         Uploader uploader = new Uploader();
         gym gym = gymService.findGymById(id);
         if(gym == null) throw new NotFoundException("gym not found");
-        gym.setAvatar(uploader.uploadFile(img));
-        gymService.save(gym);
+        if(img != null) {
+            gym.setAvatar(uploader.uploadFile(img));
+            gymService.save(gym);
+        }
         return ResponseEntity.ok(gym);
     }
 

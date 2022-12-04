@@ -29,6 +29,11 @@ public class comboController {
     public ResponseEntity<List<combo>> getAllCombo(){
         return ResponseEntity.ok(comboService.getAll());
     }
+
+    @GetMapping("getComboById/{id}")
+    public ResponseEntity<combo> getComboById(@PathVariable int id){
+        return ResponseEntity.ok(comboService.findByid(id));
+    }
     @PostMapping("addCombo")
     public ResponseEntity<combo> addCombo(@RequestBody addComboRequest addComboRequest) {
         gym gym = gymService.findGymById(addComboRequest.getGymId());

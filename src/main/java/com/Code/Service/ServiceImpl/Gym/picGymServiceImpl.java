@@ -19,4 +19,9 @@ public class picGymServiceImpl implements gymPicService {
     public List<picGym> getByGym(int id) {
         return picGymRepository.getAllImgByPt(id).get();
     }
+
+    @Override
+    public void add(picGym picGym) {
+        picGymRepository.save(picGym);
+    }
 }

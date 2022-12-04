@@ -10,12 +10,11 @@ import com.Code.Service.Gym.comboService;
 import com.Code.Service.Gym.gymService;
 import com.Code.Service.Payment.billGymService;
 import com.Code.Service.User.userService;
+import org.apache.http.HttpStatus;
+import org.apache.http.protocol.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -34,26 +33,24 @@ public class billGymController {
     @Autowired
     private comboService comboService;
 
-    @RequestMapping("/checkout")
-    public Boolean checkout(
+    @PostMapping("/checkout")
+    public ResponseEntity<billGymResponse> checkout(
             @RequestParam("idUser") int idUser,
-            @RequestParam("idGym") int idGym,
             @RequestParam("idCombo") int idCombo) {
         user user = userService.findById(idUser);
-        gym gym = gymService.findGymById(idGym);
         combo combo = comboService.findByid(idCombo);
         if (bill_gymService.getByUser(idUser) != null) {
-            System.out.println(bill_gymService.getByUser(idUser).toString());
-            return false;
+            return ResponseEntity.badRequest().build();
         }
         billGym bill = new billGym();
         bill.setUser(user);
-        bill.setGym(gym);
+        bill.setGym(combo.getGym());
         bill.setCombo(combo);
         bill.setDayStart(LocalDateTime.now());
         bill.setDayEnd(LocalDateTime.now().plusMonths(1));
         bill_gymService.save(bill);
-        return true;
+        billGymResponse billGymResponse = new billGymResponse(bill);
+        return ResponseEntity.ok(billGymResponse);
     }
 
     @RequestMapping("/checkGymExit/{id}")

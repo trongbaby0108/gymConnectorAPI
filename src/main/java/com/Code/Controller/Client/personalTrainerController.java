@@ -1,15 +1,22 @@
 package com.Code.Controller.Client;
 
 import com.Code.Entity.PT.personalTrainer;
+import com.Code.Entity.PT.picPt;
+import com.Code.Exception.NotFoundException;
 import com.Code.Model.Request.ptUpdateRequest;
 import com.Code.Model.Response.PTResponse;
 import com.Code.Model.Response.userInfoResponse;
 import com.Code.Service.PT.personalTrainerService;
+import com.Code.Service.PT.picPTService;
 import com.Code.Service.Payment.billPtService;
 import com.Code.Service.User.userService;
+import com.Code.Util.Uploader;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +28,10 @@ public class personalTrainerController {
     private personalTrainerService personalTrainerService;
 
     @Autowired
-    private userService userService;
+    private billPtService billPtService;
 
     @Autowired
-    private billPtService billPtService;
+    private picPTService picPTService;
 
     @RequestMapping("/update")
     public PTResponse update(@RequestBody ptUpdateRequest ptUpdateRequest) {
@@ -49,5 +56,18 @@ public class personalTrainerController {
         });
         if(res.size() == 0) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(res);
+    }
+
+    @SneakyThrows
+    @PostMapping("/addMoreImg")
+    public HttpStatus addMoreImg(@RequestParam("id") int id, @RequestParam("pic") MultipartFile pic){
+        personalTrainer pt = personalTrainerService.findById(id);
+        if(pt == null) throw new NotFoundException("Pt not found");
+        Uploader uploader = new Uploader();
+        picPt picPt = new picPt();
+        picPt.setPersonalTrainer(pt);
+        picPt.setImg(uploader.uploadFile(pic));
+        picPTService.save(picPt);
+        return HttpStatus.OK;
     }
 }

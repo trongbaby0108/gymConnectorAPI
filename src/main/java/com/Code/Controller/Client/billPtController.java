@@ -10,10 +10,7 @@ import com.Code.Service.Payment.billPtService;
 import com.Code.Service.User.userService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -30,14 +27,14 @@ public class billPtController {
     @Autowired
     private personalTrainerService personal_trainerService;
 
-    @RequestMapping("checkout")
-    public Boolean checkout(
+    @PostMapping("checkout")
+    public ResponseEntity<?> checkout(
             @RequestParam("idUser") int idUser,
             @RequestParam("idPt") int idPt) {
         user user = userService.findById(idUser);
         personalTrainer pt = personal_trainerService.findById(idPt);
         if (bill_ptService.getByUser(idUser) != null) {
-            return false;
+            return ResponseEntity.badRequest().build();
         }
         billPt bill = new billPt();
         bill.setUser(user);
@@ -45,7 +42,8 @@ public class billPtController {
         bill.setDayStart(LocalDateTime.now());
         bill.setDayEnd(LocalDateTime.now().plusMonths(1));
         bill_ptService.save(bill);
-        return true;
+        billPTResponse billPTResponse = new billPTResponse(bill);
+        return ResponseEntity.ok(billPTResponse);
     }
 
     @RequestMapping("checkPTExit/{id}")

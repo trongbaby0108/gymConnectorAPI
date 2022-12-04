@@ -2,10 +2,12 @@ package com.Code.Controller.Admin;
 
 import com.Code.Entity.Gym.combo;
 import com.Code.Entity.Gym.gym;
+import com.Code.Entity.Gym.picGym;
 import com.Code.Exception.ApiRequestException;
 import com.Code.Exception.NotFoundException;
 import com.Code.Model.Request.addGymRequest;
 import com.Code.Model.Request.updateGymRequest;
+import com.Code.Service.Gym.gymPicService;
 import com.Code.Service.Gym.gymService;
 import com.Code.Util.Uploader;
 import lombok.SneakyThrows;
@@ -22,6 +24,9 @@ import java.util.List;
 public class gymController {
     @Autowired
     private gymService gymService;
+
+    @Autowired
+    private gymPicService gymPicService;
 
     @GetMapping("/getAll")
     public ResponseEntity<List<gym>> getAll(){
@@ -66,6 +71,20 @@ public class gymController {
         if(img != null) {
             gym.setAvatar(uploader.uploadFile(img));
             gymService.save(gym);
+        }
+        return ResponseEntity.ok(gym);
+    }
+    @SneakyThrows
+    @PostMapping(value = "/addMoreGymImg")
+    public ResponseEntity<?> addMoreGymImg(@RequestParam(value = "idGym") int id, @RequestParam(value ="image") MultipartFile img) {
+        Uploader uploader = new Uploader();
+        gym gym = gymService.findGymById(id);
+        picGym pic = new picGym();
+        if(gym == null) throw new NotFoundException("gym not found");
+        if(img != null) {
+            pic.setImg(uploader.uploadFile(img));
+            pic.setGym(gym);
+            gymPicService.add(pic);
         }
         return ResponseEntity.ok(gym);
     }

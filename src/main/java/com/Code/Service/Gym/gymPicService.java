@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface gymPicService {
     public List<picGym> getByGym(int id);
+    public void add(picGym picGym);
 }

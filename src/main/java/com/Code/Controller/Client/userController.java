@@ -6,11 +6,13 @@ import com.Code.Model.Request.updateUserRequest;
 import com.Code.Model.Response.userInfoResponse;
 import com.Code.Service.Payment.billPtService;
 import com.Code.Service.User.userService;
+import com.Code.Util.Uploader;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,5 +34,16 @@ public class userController {
         user.setName(updateUserRequest.getName());
         userService.save(user);
         return ResponseEntity.ok(new userInfoResponse(user));
+    }
+
+    @PostMapping("/uploadAvatar")
+    private HttpStatus uploadAvatar(@RequestParam("username") String username,
+                                    @RequestParam("avatar") MultipartFile avatar) {
+        user user = userService.findByUserName(username.trim());
+        //if(user == null) System.out.println(username + " is null");
+        Uploader uploader = new Uploader();
+        user.setAvatar(uploader.uploadFile(avatar));
+        userService.save(user);
+        return HttpStatus.OK;
     }
 }

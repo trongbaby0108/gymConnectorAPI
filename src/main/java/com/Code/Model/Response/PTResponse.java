@@ -25,7 +25,7 @@ public class PTResponse {
         this.name = pt.getName();
         this.address = pt.getAddress();
         this.phone = pt.getAccount().getPhone();
-        this.email = pt.getAccount().getPhone();
+        this.email = pt.getAccount().getEmail();
         this.avatar = pt.getAvatar();
         this.fee = pt.getPrice();
         this.Role = pt.getAccount().getRole().getText();

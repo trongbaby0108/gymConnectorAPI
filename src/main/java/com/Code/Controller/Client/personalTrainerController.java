@@ -6,6 +6,7 @@ import com.Code.Exception.NotFoundException;
 import com.Code.Model.Request.ptUpdateRequest;
 import com.Code.Model.Response.PTResponse;
 import com.Code.Model.Response.userInfoResponse;
+import com.Code.Service.Auth.AccountService;
 import com.Code.Service.PT.personalTrainerService;
 import com.Code.Service.PT.picPTService;
 import com.Code.Service.Payment.billPtService;
@@ -33,14 +34,21 @@ public class personalTrainerController {
     @Autowired
     private picPTService picPTService;
 
+    @Autowired
+    private AccountService accountService;
+
     @RequestMapping("/update")
     public PTResponse update(@RequestBody ptUpdateRequest ptUpdateRequest) {
+        System.out.println(ptUpdateRequest.toString());
         personalTrainer pt = personalTrainerService.findById(ptUpdateRequest.getId());
         pt.getAccount().setEmail(ptUpdateRequest.getEmail());
         pt.getAccount().setPhone(ptUpdateRequest.getPhone());
+        accountService.save(pt.getAccount());
+        System.out.println(pt.getAccount());
         pt.setAddress(ptUpdateRequest.getAddress());
         pt.setName(ptUpdateRequest.getName());
         pt.setPrice(ptUpdateRequest.getPrice());
+
         personalTrainerService.save(pt);
         return new PTResponse(pt);
     }

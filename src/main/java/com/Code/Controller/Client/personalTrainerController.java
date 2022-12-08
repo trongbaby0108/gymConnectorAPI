@@ -44,11 +44,9 @@ public class personalTrainerController {
         pt.getAccount().setEmail(ptUpdateRequest.getEmail());
         pt.getAccount().setPhone(ptUpdateRequest.getPhone());
         accountService.save(pt.getAccount());
-        System.out.println(pt.getAccount());
         pt.setAddress(ptUpdateRequest.getAddress());
         pt.setName(ptUpdateRequest.getName());
         pt.setPrice(ptUpdateRequest.getPrice());
-
         personalTrainerService.save(pt);
         return new PTResponse(pt);
     }
